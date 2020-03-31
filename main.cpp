@@ -3,9 +3,9 @@
 #include "Generator.h"
 #include "Paillier.h"
 #include "DataHider.h"
+#include "Histogram.h"
 
 #include <vector>
-#include <map>
 #include <cstdlib>
 #include <ctime>
 #include <string>
@@ -72,19 +72,6 @@ std::vector< std::vector<Mpz> > generate_test_matrix() {
     return matrix;
 }
 
-int get_max_histogram(std::map<int,int> histogram) {
-    int max_value = -1;
-    int EP = -1;
-    for (std::map<int,int>::iterator it = histogram.begin(); it != histogram.end(); it++) {
-        if (it->second > max_value) {
-            EP = it->first;
-            max_value = it->second;
-        }
-    }
-    std::cout << "quantity = " << histogram[EP] << std::endl;
-    return EP;
-}
-
 std::vector<Mpz> get_cdw(const Mpz& c1, const Mpz& c2, int d, int EP, int w, const Mpz& g, int& w_pos) {
     std::vector<Mpz> result;
     if (d < EP) {
@@ -107,7 +94,7 @@ void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paill
     std::vector<int> d_list;
     std::vector< std::vector<Mpz> > encoded_matrix;
     std::vector< std::vector<Mpz> > cdw_matrix;
-    std::map<int,int> histogram;
+    Histogram histogram;
     DataHider dataHider(paillier.p, paillier.q);
     for (int row = 0; row < 6; row++) {
         encoded_matrix.push_back(matrix[row]);
@@ -128,14 +115,11 @@ void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paill
 
         d_list.push_back(d);
 
-        if (histogram.find(d) == histogram.end()) {
-            histogram.insert(std::pair<int,int>(d, 0));
-        }
-        histogram[d] += 1;
+        histogram.add(d);
 
     }
     theta_g = (paillier.N + 1).invert(paillier.N2);
-    int EP = 4;//get_max_histogram(histogram);
+    int EP = 4; //histogram.get_max_key(); TODO: FIX THIS PROBLEM
     std::cout << "max d = " << EP << std::endl;
     int cmp;
     // we get c1 and c2
@@ -238,7 +222,7 @@ int main() {
     Generator generator_r2(KS);
 
     std::vector<int> d_list;
-    std::map<int,int> histogram;
+    Histogram histogram;
 
     for (int row = 0; row < 6; row++) {
         std::cout << "\n****************************" << std::endl;
@@ -285,12 +269,9 @@ int main() {
 
         d_list.push_back(d);
 
-        if (histogram.find(d) == histogram.end()) {
-            histogram.insert(std::pair<int,int>(d, 0));
-        }
-        histogram[d] += 1;
+        histogram.add(d);
     }
-    int EP = get_max_histogram(histogram);
+    int EP = histogram.get_max_key();
     std::cout << "\n\nMax value = " << EP << std::endl;
     std::cout << "\n\nStarting histogram part\n\n" << std::endl;
     Mpz cdw1, cdw2;

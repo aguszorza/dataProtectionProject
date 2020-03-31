@@ -177,6 +177,33 @@ Generator.cpp.s:
 	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Generator.cpp.s
 .PHONY : Generator.cpp.s
 
+Histogram.o: Histogram.cpp.o
+
+.PHONY : Histogram.o
+
+# target to build an object file
+Histogram.cpp.o:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Histogram.cpp.o
+.PHONY : Histogram.cpp.o
+
+Histogram.i: Histogram.cpp.i
+
+.PHONY : Histogram.i
+
+# target to preprocess a source file
+Histogram.cpp.i:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Histogram.cpp.i
+.PHONY : Histogram.cpp.i
+
+Histogram.s: Histogram.cpp.s
+
+.PHONY : Histogram.s
+
+# target to generate assembly for a file
+Histogram.cpp.s:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Histogram.cpp.s
+.PHONY : Histogram.cpp.s
+
 Mpz.o: Mpz.cpp.o
 
 .PHONY : Mpz.o
@@ -273,6 +300,9 @@ help:
 	@echo "... Generator.o"
 	@echo "... Generator.i"
 	@echo "... Generator.s"
+	@echo "... Histogram.o"
+	@echo "... Histogram.i"
+	@echo "... Histogram.s"
 	@echo "... Mpz.o"
 	@echo "... Mpz.i"
 	@echo "... Mpz.s"

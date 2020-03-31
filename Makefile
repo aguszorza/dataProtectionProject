@@ -3,8 +3,8 @@ CFLAGS = -Wall
 LFLAGS = -lgmpxx -lgmp
 FILE_OUT = Programme
 
-all: main.o Mpz.o Generator.o Paillier.o DataHider.o
-	$(CC) $(CFLAGS) -o $(FILE_OUT) main.o Mpz.o Generator.o Paillier.o DataHider.o $(LFLAGS)
+all: main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o
+	$(CC) $(CFLAGS) -o $(FILE_OUT) main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o $(LFLAGS)
 
 main.o: main.cpp Mpz.h
 	$(CC) $(CFLAGS) -c -o main.o main.cpp $(LFLAGS)
@@ -20,4 +20,7 @@ Paillier.o: Paillier.cpp Paillier.h Mpz.h
 
 DataHider.o: DataHider.cpp DataHider.h Mpz.h
 	$(CC) $(CFLAGS) -c -o DataHider.o DataHider.cpp $(LFLAGS)
+
+Histogram.o: Histogram.cpp Histogram.h
+	$(CC) $(CFLAGS) -c -o Histogram.o Histogram.cpp $(LFLAGS)
 

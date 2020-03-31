@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Pailler.dir/DataHider.cpp.o"
   "CMakeFiles/Pailler.dir/Generator.cpp.o"
+  "CMakeFiles/Pailler.dir/Histogram.cpp.o"
   "CMakeFiles/Pailler.dir/Mpz.cpp.o"
   "CMakeFiles/Pailler.dir/Paillier.cpp.o"
   "CMakeFiles/Pailler.dir/main.cpp.o"
