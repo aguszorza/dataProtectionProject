@@ -8,14 +8,14 @@
 #include "Mpz.h"
 
 class Paillier {
-private:
+public:
     Mpz p;
     Mpz q;
     Mpz N;
     Mpz FI;
     Mpz N2;
 
-public:
+
     Paillier(const Mpz& p, const Mpz& q);
 
     ~Paillier();

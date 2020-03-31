@@ -12,6 +12,7 @@
 
 int MAX_VALUE = 255;
 unsigned long int KS = 1926492749; // TODO: Choose a better number
+std::string W = "00101000111010101";
 
 std::vector< std::vector<int> > generate_data(const unsigned int rows, const unsigned int columns) {
     std::srand(std::time(NULL));
@@ -50,8 +51,8 @@ std::vector< std::vector<Mpz> > generate_test_matrix() {
     Mpz row_1[] = {5, 2, 2}; // d = 3
     Mpz row_2[] = {7, 101, 11}; // d =
     Mpz row_3[] = {25, 47, 25}; // d = 3
-    Mpz row_4[] = {25, 47, 100}; // d = 3
-    Mpz row_5[] = {205, 47, 250}; // d = 3
+    Mpz row_4[] = {25, 47, 99}; // d = 3
+    Mpz row_5[] = {255, 47, 250}; // d = 3
     Mpz row_6[] = {125, 47, 129}; // d = 3
 
     std::vector<Mpz> row1(row_1, row_1 + sizeof(row_1) / sizeof(Mpz));
@@ -80,21 +81,105 @@ int get_max_histogram(std::map<int,int> histogram) {
             max_value = it->second;
         }
     }
+    std::cout << "quantity = " << histogram[max_d] << std::endl;
     return max_d;
 }
 
-std::vector<Mpz> get_cdw(const Mpz& c1, const Mpz& c2, int d, int max_d_value, int w, const Mpz& g) {
+std::vector<Mpz> get_cdw(const Mpz& c1, const Mpz& c2, int d, int max_d_value, int w, const Mpz& g, int& w_pos) {
     std::vector<Mpz> result;
     if (d < max_d_value) {
         result.push_back(c1);
     } else if (d == max_d_value) {
         result.push_back(c1 * g.pow(w));
-        std::cout << "Caso =, w = " << w << "cdw = " << result.back() << std::endl;
+        std::cout << "Caso =, w = " << w << " cdw = " << result.back() << std::endl;
+        w_pos += 1;
     } else {
         result.push_back(c1 * g);
     }
     result.push_back(c2);
     return result;
+}
+
+void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paillier) {
+    Generator generator_r2(KS);
+    Mpz r2;
+    Mpz theta_er, theta_1, theta_2, theta_g;
+    std::vector<int> d_list;
+    std::vector< std::vector<Mpz> > encoded_matrix;
+    std::vector< std::vector<Mpz> > cdw_matrix;
+    std::map<int,int> histogram;
+    DataHider dataHider(paillier.p, paillier.q);
+    for (int row = 0; row < 6; row++) {
+        encoded_matrix.push_back(matrix[row]);
+        r2 = generator_r2.generate_prime(10, 24);
+        theta_er = paillier.encode(0, r2).invert(paillier.N2);
+        encoded_matrix[row][2] = (encoded_matrix[row][2] * theta_er).mod(paillier.N2);
+        cdw_matrix.push_back(encoded_matrix[row]);
+
+        theta_1 = encoded_matrix[row][0].invert(paillier.N2);
+        theta_2 = encoded_matrix[row][2].invert(paillier.N2);
+
+        // eq 34
+        cdw_matrix[row][0] = (encoded_matrix[row][0] * theta_2).mod(paillier.N2);
+        cdw_matrix[row][2] = (encoded_matrix[row][2] * theta_1).mod(paillier.N2);
+
+        // histogram
+        int d = dataHider.get_difference(cdw_matrix[row][0], cdw_matrix[row][2]);
+
+        d_list.push_back(d);
+
+        if (histogram.find(d) == histogram.end()) {
+            histogram.insert(std::pair<int,int>(d, 0));
+        }
+        histogram[d] += 1;
+
+    }
+    theta_g = (paillier.N + 1).invert(paillier.N2);
+    int max_d = 4;//get_max_histogram(histogram);
+    std::cout << "max d = " << max_d << std::endl;
+    int cmp;
+    // we get c1 and c2
+    for (int row = 0; row < 6; row++) {
+        cmp = dataHider.compare(cdw_matrix[row][0], cdw_matrix[row][2]);
+        if (cmp > 0) {
+            if (d_list[row] > max_d) {
+                encoded_matrix[row][0] = (encoded_matrix[row][0] * theta_g).mod(paillier.N2);
+            }
+        } else {
+            if (d_list[row] > max_d) {
+                encoded_matrix[row][2] = (encoded_matrix[row][2] * theta_g).mod(paillier.N2);
+            }
+        }
+    }
+    // we decode with pailler (we obtain P1w and P2w)
+    for (int row = 0; row < 6; row++) {
+        encoded_matrix[row][0] = paillier.decode(encoded_matrix[row][0]);
+        encoded_matrix[row][2] = paillier.decode(encoded_matrix[row][2]);
+    }
+
+    std::cout << "\nBefore substracting 1\n" << std::endl;
+    print_matrix(encoded_matrix, 6, 3);
+
+    for (int row = 0; row < 6; row++) {
+        cmp = dataHider.compare(cdw_matrix[row][0], cdw_matrix[row][2]);
+        std::cout << "CMP row " << row << " = " << cmp << std::endl;
+        if (d_list[row] == max_d){
+            std::cout << "w agregada = 0" << std::endl;
+        }
+        if (d_list[row] == max_d + 1){
+            std::cout << "w agregada = 1" << std::endl;
+        }
+        if (cmp > 0) {
+            if (d_list[row] > max_d) {
+                encoded_matrix[row][0] = encoded_matrix[row][0] - 1;
+            }
+        } else {
+            if (d_list[row] > max_d) {
+                encoded_matrix[row][2] = encoded_matrix[row][2] - 1;
+            }
+        }
+    }
+    print_matrix(encoded_matrix, 6, 3);
 }
 
 int main() {
@@ -153,8 +238,6 @@ int main() {
     Generator generator_r2(KS);
 
     std::vector<int> d_list;
-    std::vector< std::list<Mpz> > cd_list;
-    std::vector< std::list<Mpz> > c_list;
     std::map<int,int> histogram;
 
     for (int row = 0; row < 6; row++) {
@@ -200,13 +283,7 @@ int main() {
         int d = dataHider.get_difference(list2.front(), list2.back());
         std::cout << "d(con lista) = " << d << std::endl;
 
-        std::list<Mpz> aux;
-        aux.push_back(encoded1);
-        aux.push_back(encoded2);
-
         d_list.push_back(d);
-        cd_list.push_back(list2);
-        c_list.push_back(aux);
 
         if (histogram.find(d) == histogram.end()) {
             histogram.insert(std::pair<int,int>(d, 0));
@@ -217,25 +294,25 @@ int main() {
     std::cout << "\n\nMax value = " << max_d_value << std::endl;
     std::cout << "\n\nStarting histogram part\n\n" << std::endl;
     Mpz cdw1, cdw2;
-    std::string w = "00101000111010101";
+
     int w_pos = 0;
     for (int row = 0; row < 6; row++) {
         int acutal_d = d_list[row];
         int cmp = dataHider.compare(cd_matrix[row][0], cd_matrix[row][2]);
         std::vector<Mpz> result;
-        char w_ = w[w_pos] - '0';
+        char w_ = W[w_pos] - '0';
         if (cmp > 0) {
-            result = get_cdw(c_matrix[row][0], c_matrix[row][2], acutal_d, max_d_value, w_, g);
+            result = get_cdw(c_matrix[row][0], c_matrix[row][2], acutal_d, max_d_value, w_, g, w_pos);
             cdw1 = result.front();
             cdw2 = result.back();
         } else {
-            result = get_cdw(c_matrix[row][2], c_matrix[row][0], acutal_d, max_d_value, w_, g);
+            result = get_cdw(c_matrix[row][2], c_matrix[row][0], acutal_d, max_d_value, w_, g, w_pos);
             cdw2 = result.front();
             cdw1 = result.back();
         }
 
-        std::cout << "w = " << w[w_pos] << std::endl;
-        w_pos += 1; // TODO: add one only if it was EP
+        std::cout << "w = " << W[w_pos] << std::endl;
+        //w_pos += 1; // TODO: add one only if it was EP
         std::cout << "Cdw1 = " << cdw1 << std::endl;
         std::cout << "Cdw2 = " << cdw2 << std::endl;
 
@@ -243,6 +320,10 @@ int main() {
 
         std::cout << "Cdw2' = " << (cdw2 * paillier.encode(0, r2)).mod(N2) << std::endl;
 
+        final_matrix[row][0] = cdw1;
+        final_matrix[row][2] = (cdw2 * paillier.encode(0, r2)).mod(N2);
     }
     print_matrix(original_matrix, 6, 3);
+    std::cout << "\nStarting Decode\n" << std::endl;
+    decode(final_matrix, paillier);
 }
