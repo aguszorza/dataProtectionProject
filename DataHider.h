@@ -21,6 +21,7 @@ public:
 
     int get_difference(const Mpz& cd1, const Mpz& cd2);
 
+    int compare(const Mpz& cd1, const Mpz& cd2);
 };
 
 
