@@ -1,9 +1,8 @@
 #include "Generator.h"
-#include <time.h>
 
-Generator::Generator() {
+Generator::Generator(unsigned long int seed) {
     gmp_randinit_default(this->generator);
-    gmp_randseed_ui(this->generator, time(NULL));
+    gmp_randseed_ui(this->generator, seed);
 }
 
 Generator::~Generator() {

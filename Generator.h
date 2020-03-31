@@ -3,13 +3,14 @@
 
 #include <gmp.h>
 #include "Mpz.h"
+#include <time.h>
 
 class Generator {
 private:
     gmp_randstate_t generator;
 
 public:
-    Generator();
+    Generator(unsigned long int seed = time(NULL));
 
     ~Generator();
 

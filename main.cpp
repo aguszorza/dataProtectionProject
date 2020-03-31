@@ -41,60 +41,22 @@ void test_matrix() {
     print_matrix(matrix, 5, 5);
 }
 
-int find_d(const Mpz& value, const Mpz& g, const Mpz& N2) {
-    // TODO: find a better way to solve it.
-    int i = -1;
-    Mpz aux = -1;
-    while (i <= MAX_VALUE && aux != value) {
-        i += 1;
-        aux = g.powm(Mpz(i), N2);
-    }
-    return i;
-}
+std::vector< std::vector<int> > generate_test_matrix() {
+    // Matrix 3x3
+    std::vector< std::vector<int> > matrix;
+    int row_1[] = {5, 2, 2}; // d = 3
+    int row_2[] = {7, 101, 10}; // d = 3
+    int row_3[] = {25, 47, 25}; // d = 3
 
-void hider(const Mpz& c1, const Mpz& c2, const Mpz& p, const Mpz& q) {
-    Mpz out_value1, out_value2;
-    Mpz N = p * q;
-    Mpz N2 = N * N;
-    Mpz FI = (p - 1) * (q - 1);
-    Mpz g = N + 1;
+    std::vector<int> row1(row_1, row_1 + sizeof(row_1) / sizeof(int));
+    std::vector<int> row2(row_2, row_2 + sizeof(row_2) / sizeof(int));
+    std::vector<int> row3(row_3, row_3 + sizeof(row_3) / sizeof(int));
 
+    matrix.push_back(row1);
+    matrix.push_back(row2);
+    matrix.push_back(row3);
 
-    Mpz cd1, cd2;
-    Mpz tetha1 = c1.invert(N2);
-    Mpz tetha2 = c2.invert(N2);
-
-    cd1 = (c1 * tetha2).mod(N2);
-    cd2 = (c2 * tetha1).mod(N2);
-
-    int d1 = find_d(cd1, g, N2);
-    int d2 = find_d(cd2, g, N2);
-
-    if (d1 != 256) {
-        std::cout << "P1 >= P2, d = " << d1 << std::endl;
-    } else {
-        std::cout << "P2 > P1, d = " << d2 << std::endl;
-    }
-
-//    if (value1 < value2) {
-//        out_value2 = value2 - value1;
-//        out_value1 = N * FI - out_value2;
-//    } else {
-//        out_value1 = value1 - value2;
-//        out_value2 = N * FI - out_value1;
-//    }
-//    out_value1 = g.powm(out_value1, N2);
-//    out_value2 = g.powm(out_value2, N2);
-//
-//    std::cout << "Cd1 = " << out_value1 << std::endl;
-//    std::cout << "Cd2 = " << out_value2 << std::endl;
-//
-//    std::cout << "d1 = " << find_d(out_value1, g, N2) << std::endl;
-//    std::cout << "d2 = " << find_d(out_value2, g, N2) << std::endl;
-
-
-    // TODO: ADD IF
-    // d1 = 3, d2 = 30 TODO: add the algorithm to find this
+    return matrix;
 }
 
 int main() {
@@ -110,7 +72,7 @@ int main() {
 
     Paillier paillier(p, q);
 
-    int pixel1 = 5;
+    int pixel1 = 5; // TODO: WARNING: d value might be wrong if we use p = 11 and q = 3 (they are small values)
     int pixel2 = 2;
 
     encoded1 = paillier.encode(pixel1, r);
@@ -129,23 +91,6 @@ int main() {
     std::cout << "Decode Pailler = " << paillier.decode(encoded2) << std::endl;
     std::cout << "Decode Pailler = " << paillier.decode(encoded3) << std::endl;
 
-    std::cout << "***USANDO LOS PIXELES***" << std::endl;
-    hider(Mpz(pixel1), Mpz(pixel2), p, q);
-
-    Mpz N2 = p * q * p * q;
-    Mpz tetha1 = encoded1.invert(N2);
-    Mpz tetha2 = encoded2.invert(N2);
-    Mpz cd1 = (encoded1 * tetha2).mod(N2);
-
-    std::cout << "Cd1(con tetha) = " << cd1 << std::endl;
-    std::cout << "Cd2(con tetha) = " << (encoded2 * tetha1).mod(N2) << std::endl;
-    std::cout << "d(tetha) = " << find_d(cd1, p*q+1, N2) << std::endl;
-
-    std::cout << "***USANDO LOS PIXELES ENCRIPTADOS***" << std::endl;
-    hider(encoded1, encoded2, p, q);
-
-
-    // asdasd
     DataHider dataHider(p, q);
     std::list<Mpz> list = dataHider.get_encrypted_differences(encoded1, encoded2);
     std::cout << "Cd1(con lista) = " << list.front() << std::endl;
@@ -153,5 +98,47 @@ int main() {
 
     std::cout << "d(con lista) = " << dataHider.get_difference(list.front(), list.back()) << std::endl;
 
-    test_matrix();
+    //test_matrix();
+
+    std::cout << "\n\nTESTEANDO CON MATRIZ\n\n" << std::endl;
+
+    std::vector< std::vector<int> > matrix = generate_test_matrix();
+    print_matrix(matrix, 3, 3);
+
+    Generator generator_r1;
+    Generator generator_r2(1926492749); // TODO: Choose a better number
+
+    for (int row = 0; row < 3; row++) {
+        std::cout << "\n****************************" << std::endl;
+        std::cout << "Row " << row + 1 << "" << std::endl;
+        std::cout << "****************************\n" << std::endl;
+
+        pixel1 = matrix[row][0];
+        pixel2 = matrix[row][2];
+
+        r = generator_r1.generate_prime(10, 24);
+        r2 = generator_r2.generate_prime(10, 24);
+
+        encoded1 = paillier.encode(pixel1, r);
+        encoded2 = paillier.encode(pixel2, r);
+
+        encoded3 = encoded2 * paillier.encode(0, r * r2);
+        std::cout << "r1 = " << r << std::endl;
+        std::cout << "r2 = " << r2 << std::endl;
+
+
+        std::cout << "Pailler(" << pixel1 << ") = " << encoded1 << std::endl;
+        std::cout << "Pailler(" << pixel2 << ") = " << encoded2 << std::endl;
+        std::cout << "Pailler(" << encoded2 << ") = " << encoded3 << std::endl;
+
+        std::cout << "Decode Pailler = " << paillier.decode(encoded1) << std::endl;
+        std::cout << "Decode Pailler = " << paillier.decode(encoded2) << std::endl;
+        std::cout << "Decode Pailler = " << paillier.decode(encoded3) << std::endl;
+
+        std::list<Mpz> list2 = dataHider.get_encrypted_differences(encoded1, encoded2);
+        std::cout << "Cd1(con lista) = " << list2.front() << std::endl;
+        std::cout << "Cd2(con lista) = " << list2.back() << std::endl;
+
+        std::cout << "d(con lista) = " << dataHider.get_difference(list2.front(), list2.back()) << std::endl;
+    }
 }
