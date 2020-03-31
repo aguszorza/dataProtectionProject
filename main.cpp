@@ -74,22 +74,22 @@ std::vector< std::vector<Mpz> > generate_test_matrix() {
 
 int get_max_histogram(std::map<int,int> histogram) {
     int max_value = -1;
-    int max_d = -1;
+    int EP = -1;
     for (std::map<int,int>::iterator it = histogram.begin(); it != histogram.end(); it++) {
         if (it->second > max_value) {
-            max_d = it->first;
+            EP = it->first;
             max_value = it->second;
         }
     }
-    std::cout << "quantity = " << histogram[max_d] << std::endl;
-    return max_d;
+    std::cout << "quantity = " << histogram[EP] << std::endl;
+    return EP;
 }
 
-std::vector<Mpz> get_cdw(const Mpz& c1, const Mpz& c2, int d, int max_d_value, int w, const Mpz& g, int& w_pos) {
+std::vector<Mpz> get_cdw(const Mpz& c1, const Mpz& c2, int d, int EP, int w, const Mpz& g, int& w_pos) {
     std::vector<Mpz> result;
-    if (d < max_d_value) {
+    if (d < EP) {
         result.push_back(c1);
-    } else if (d == max_d_value) {
+    } else if (d == EP) {
         result.push_back(c1 * g.pow(w));
         std::cout << "Caso =, w = " << w << " cdw = " << result.back() << std::endl;
         w_pos += 1;
@@ -135,18 +135,18 @@ void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paill
 
     }
     theta_g = (paillier.N + 1).invert(paillier.N2);
-    int max_d = 4;//get_max_histogram(histogram);
-    std::cout << "max d = " << max_d << std::endl;
+    int EP = 4;//get_max_histogram(histogram);
+    std::cout << "max d = " << EP << std::endl;
     int cmp;
     // we get c1 and c2
     for (int row = 0; row < 6; row++) {
         cmp = dataHider.compare(cdw_matrix[row][0], cdw_matrix[row][2]);
         if (cmp > 0) {
-            if (d_list[row] > max_d) {
+            if (d_list[row] > EP) {
                 encoded_matrix[row][0] = (encoded_matrix[row][0] * theta_g).mod(paillier.N2);
             }
         } else {
-            if (d_list[row] > max_d) {
+            if (d_list[row] > EP) {
                 encoded_matrix[row][2] = (encoded_matrix[row][2] * theta_g).mod(paillier.N2);
             }
         }
@@ -163,18 +163,18 @@ void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paill
     for (int row = 0; row < 6; row++) {
         cmp = dataHider.compare(cdw_matrix[row][0], cdw_matrix[row][2]);
         std::cout << "CMP row " << row << " = " << cmp << std::endl;
-        if (d_list[row] == max_d){
+        if (d_list[row] == EP){
             std::cout << "w agregada = 0" << std::endl;
         }
-        if (d_list[row] == max_d + 1){
+        if (d_list[row] == EP + 1){
             std::cout << "w agregada = 1" << std::endl;
         }
         if (cmp > 0) {
-            if (d_list[row] > max_d) {
+            if (d_list[row] > EP) {
                 encoded_matrix[row][0] = encoded_matrix[row][0] - 1;
             }
         } else {
-            if (d_list[row] > max_d) {
+            if (d_list[row] > EP) {
                 encoded_matrix[row][2] = encoded_matrix[row][2] - 1;
             }
         }
@@ -290,8 +290,8 @@ int main() {
         }
         histogram[d] += 1;
     }
-    int max_d_value = get_max_histogram(histogram);
-    std::cout << "\n\nMax value = " << max_d_value << std::endl;
+    int EP = get_max_histogram(histogram);
+    std::cout << "\n\nMax value = " << EP << std::endl;
     std::cout << "\n\nStarting histogram part\n\n" << std::endl;
     Mpz cdw1, cdw2;
 
@@ -302,11 +302,11 @@ int main() {
         std::vector<Mpz> result;
         char w_ = W[w_pos] - '0';
         if (cmp > 0) {
-            result = get_cdw(c_matrix[row][0], c_matrix[row][2], acutal_d, max_d_value, w_, g, w_pos);
+            result = get_cdw(c_matrix[row][0], c_matrix[row][2], acutal_d, EP, w_, g, w_pos);
             cdw1 = result.front();
             cdw2 = result.back();
         } else {
-            result = get_cdw(c_matrix[row][2], c_matrix[row][0], acutal_d, max_d_value, w_, g, w_pos);
+            result = get_cdw(c_matrix[row][2], c_matrix[row][0], acutal_d, EP, w_, g, w_pos);
             cdw2 = result.front();
             cdw1 = result.back();
         }
