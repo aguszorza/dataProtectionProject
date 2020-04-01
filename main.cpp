@@ -26,6 +26,18 @@ void printTitle(const std::string& title) {
     std::cout << "**********************************\n" << std::endl;
 }
 
+void saveMatrixInCsv(const std::string& filename, const Matrix& matrix) {
+    std::ofstream csvFile ((filename + ".csv").c_str());
+    matrix.saveAsCsv(csvFile);
+    csvFile.close();
+}
+
+void saveMatrixInTxt(const std::string& filename, const Matrix& matrix) {
+    std::ofstream txtFile ((filename + ".txt").c_str());
+    matrix.saveAsText(txtFile, 3);
+    txtFile.close();
+}
+
 Matrix encode(const Mpz& p, const Mpz& q, const Matrix& matrix, int& EP) {
     Mpz N = p * q;
     Mpz N2 = N * N;
@@ -54,6 +66,10 @@ Matrix encode(const Mpz& p, const Mpz& q, const Matrix& matrix, int& EP) {
     final_matrix = Utils::addTattoo(c_matrix, d_list, tattooAggregator, EP, COLUMN_1, COLUMN_2);
     std::cout << "Added tattoo = " << tattooAggregator.getAddedTattoo() << std::endl;
     final_matrix = Utils::paillierVoidEncrypting(final_matrix, paillier, generator_r2, COLUMN_1, COLUMN_2);
+
+    saveMatrixInCsv("./output/encoded_paillier", c_matrix);
+    saveMatrixInCsv("./output/encoded_differences", cd_matrix);
+    saveMatrixInCsv("./output/encoded_with_tattoo", final_matrix);
 
     return final_matrix;
 }
@@ -108,15 +124,6 @@ Matrix decode_3_3_2(const Mpz& p, const Mpz& q, const Matrix& matrix, const int&
     return decoded_matrix;
 }
 
-void saveMatrix(const std::string& filename, const Matrix& matrix) {
-    std::ofstream txtFile ((filename + ".txt").c_str());
-    std::ofstream csvFile ((filename + ".csv").c_str());
-    matrix.saveAsText(txtFile, 3);
-    matrix.saveAsCsv(csvFile);
-    txtFile.close();
-    csvFile.close();
-}
-
 int main() {
     // We initialize the variables we are going to use
     Generator generator;
@@ -130,7 +137,8 @@ int main() {
 
     // We create a matrix with random data
     Matrix original_matrix(6,3, MAX_VALUE);//generate_test_matrix();
-    saveMatrix("./output/original", original_matrix);
+    saveMatrixInTxt("./output/original", original_matrix);
+    saveMatrixInCsv("./output/original", original_matrix);
 
 //    original_matrix[0][0] = 100;
 //    original_matrix[0][2] = 130;
@@ -149,11 +157,13 @@ int main() {
     decoded_matrix = decode_3_3_1(p, q, encoded_matrix, EP);
     decoded_matrix.printMatrix(3);
 
-    saveMatrix("./output/decoded_3_3_1", decoded_matrix);
+    saveMatrixInTxt("./output/decoded_3_3_1", decoded_matrix);
+    saveMatrixInCsv("./output/decoded_3_3_1", decoded_matrix);
 
     printTitle("Starting decode (approach 3.3.2)");
     // We decode the encoded matrix using the approach 3.3.2 from the paper
     decoded_matrix = decode_3_3_2(p, q, encoded_matrix, EP);
     decoded_matrix.printMatrix(3);
-    saveMatrix("./output/decoded_3_3_2", decoded_matrix);
+    saveMatrixInTxt("./output/decoded_3_3_2", decoded_matrix);
+    saveMatrixInCsv("./output/decoded_3_3_2", decoded_matrix);
 }
