@@ -7,11 +7,11 @@
 #include "Matrix.h"
 #include "Utils.h"
 #include "TattooAggregator.h"
+#include "Parser.h"
 
 
 #include <vector>
 #include <string>
-#include <fstream>
 
 int MAX_VALUE = 256;
 unsigned long int KS = 1926492749; // TODO: Choose a better number
@@ -19,6 +19,9 @@ std::string TATTOO = "10101000111010101";
 std::string EMPTY_TATTOO = "";
 int COLUMN_1 = 0;
 int COLUMN_2 = 2;
+int COLUMNS = 3;
+int ROWS = 6;
+std::string MATRIX_FILE = "";
 
 void printTitle(const std::string& title) {
     std::cout << "\n**********************************" << std::endl;
@@ -124,7 +127,32 @@ Matrix decode_3_3_2(const Mpz& p, const Mpz& q, const Matrix& matrix, const int&
     return decoded_matrix;
 }
 
-int main() {
+void test(int argc, char *argv[]) {
+    Parser parser(argc, argv);
+    std::cout << "Columnas = " << parser.getColumns(3) << std::endl;
+    std::cout << "Filas = " << parser.getRows(6) << std::endl;
+    std::cout << "Columna 1 = " << parser.getColumn1(0) << std::endl;
+    std::cout << "Columna 2 = " << parser.getColumn2(2) << std::endl;
+    std::cout << "Ks = " << parser.getKs(KS) << std::endl;
+    std::cout << "Tattoo = " << parser.getTattoo(TATTOO) << std::endl;
+    std::cout << "Filename = " << parser.getFilename("archivo") << std::endl;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc % 2 == 0) {
+        std::cout << "Parameter input error" << std::endl;
+        return 1;
+    }
+    // We get the values
+    Parser parser(argc, argv);
+    TATTOO = parser.getTattoo(TATTOO);
+    COLUMNS = parser.getColumns(COLUMNS);
+    ROWS = parser.getRows(ROWS);
+    COLUMN_1 = parser.getColumn1(COLUMN_1);
+    COLUMN_2 = parser.getColumn2(COLUMN_2);
+    KS = parser.getKs(KS);
+    MATRIX_FILE = parser.getFilename(MATRIX_FILE);
+
     // We initialize the variables we are going to use
     Generator generator;
     Matrix encoded_matrix, decoded_matrix;
@@ -166,4 +194,6 @@ int main() {
     decoded_matrix.printMatrix(3);
     saveMatrixInTxt("./output/decoded_3_3_2", decoded_matrix);
     saveMatrixInCsv("./output/decoded_3_3_2", decoded_matrix);
+
+    return 0;
 }

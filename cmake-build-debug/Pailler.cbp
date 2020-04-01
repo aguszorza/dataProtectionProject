@@ -126,6 +126,12 @@
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Paillier.h">
 			<Option target="Pailler"/>
 		</Unit>
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Parser.cpp">
+			<Option target="Pailler"/>
+		</Unit>
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Parser.h">
+			<Option target="Pailler"/>
+		</Unit>
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/TattooAggregator.cpp">
 			<Option target="Pailler"/>
 		</Unit>
