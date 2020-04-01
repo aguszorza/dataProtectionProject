@@ -31,15 +31,8 @@ std::vector<Mpz>& Matrix::operator[](size_t row) {
     return this->matrix[row];
 }
 
-void Matrix::printMatrix(int dataWidth) {
-    for (unsigned int row = 0; row < this->matrix.size(); row++) {
-        std::cout << "| ";
-        for (unsigned int column = 0; column < this->matrix[row].size(); column++){
-            std::cout.width(dataWidth);
-            std::cout << this->matrix[row][column] << " ";
-        }
-        std::cout << "|" << std::endl;
-    }
+void Matrix::printMatrix(int dataWidth) const {
+    this->saveAsText(std::cout, dataWidth);
 }
 
 size_t Matrix::size() const {
@@ -48,4 +41,27 @@ size_t Matrix::size() const {
 
 void Matrix::push_back(std::vector<Mpz> row) {
     this->matrix.push_back(row);
+}
+
+void Matrix::saveAsCsv(std::ofstream& file) const {
+    for (unsigned int row = 0; row < this->matrix.size(); row++) {
+        for (unsigned int column = 0; column < this->matrix[row].size(); column++){
+            file << this->matrix[row][column];
+            if (column < this->matrix[row].size() - 1) {
+                file << ", ";
+            }
+        }
+        file << std::endl;
+    }
+}
+
+void Matrix::saveAsText(std::ostream& file, int dataWidth) const {
+    for (unsigned int row = 0; row < this->matrix.size(); row++) {
+        file << "| ";
+        for (unsigned int column = 0; column < this->matrix[row].size(); column++){
+            file.width(dataWidth);
+            file << this->matrix[row][column] << " ";
+        }
+        file << "|" << std::endl;
+    }
 }

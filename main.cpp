@@ -11,6 +11,7 @@
 
 #include <vector>
 #include <string>
+#include <fstream>
 
 int MAX_VALUE = 256;
 unsigned long int KS = 1926492749; // TODO: Choose a better number
@@ -107,6 +108,15 @@ Matrix decode_3_3_2(const Mpz& p, const Mpz& q, const Matrix& matrix, const int&
     return decoded_matrix;
 }
 
+void saveMatrix(const std::string& filename, const Matrix& matrix) {
+    std::ofstream txtFile ((filename + ".txt").c_str());
+    std::ofstream csvFile ((filename + ".csv").c_str());
+    matrix.saveAsText(txtFile, 3);
+    matrix.saveAsCsv(csvFile);
+    txtFile.close();
+    csvFile.close();
+}
+
 int main() {
     // We initialize the variables we are going to use
     Generator generator;
@@ -120,13 +130,14 @@ int main() {
 
     // We create a matrix with random data
     Matrix original_matrix(6,3, MAX_VALUE);//generate_test_matrix();
+    saveMatrix("./output/original", original_matrix);
 
 //    original_matrix[0][0] = 100;
 //    original_matrix[0][2] = 130;
 //    original_matrix[1][0] = 73;
 //    original_matrix[1][2] = 103;
 
-    original_matrix.printMatrix(5);
+    original_matrix.printMatrix(3);
 
     // We encode the matrix
     encoded_matrix = encode(p, q, original_matrix, EP);
@@ -136,10 +147,13 @@ int main() {
     printTitle("Starting decode (approach 3.3.1)");
     // We decode the encoded matrix using the approach 3.3.1 from the paper
     decoded_matrix = decode_3_3_1(p, q, encoded_matrix, EP);
-    decoded_matrix.printMatrix(5);
+    decoded_matrix.printMatrix(3);
+
+    saveMatrix("./output/decoded_3_3_1", decoded_matrix);
 
     printTitle("Starting decode (approach 3.3.2)");
     // We decode the encoded matrix using the approach 3.3.2 from the paper
     decoded_matrix = decode_3_3_2(p, q, encoded_matrix, EP);
-    decoded_matrix.printMatrix(5);
+    decoded_matrix.printMatrix(3);
+    saveMatrix("./output/decoded_3_3_2", decoded_matrix);
 }
