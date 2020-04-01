@@ -12,7 +12,7 @@ DataHider::DataHider(const Mpz& p, const Mpz& q) {
 
 DataHider::~DataHider() {}
 
-std::list<Mpz> DataHider::get_encrypted_differences(const Mpz& c1, const Mpz& c2) {
+std::list<Mpz> DataHider::get_encrypted_differences(const Mpz& c1, const Mpz& c2) const{
     Mpz cd1, cd2;
     std::list<Mpz> result;
 
@@ -28,7 +28,7 @@ std::list<Mpz> DataHider::get_encrypted_differences(const Mpz& c1, const Mpz& c2
     return result;
 }
 
-int DataHider::find_d(const Mpz& cd) {
+int DataHider::find_d(const Mpz& cd) const {
     int d = -1;
     Mpz aux = -1;
     while (d < this->MAX_VALUE && aux != cd) {
@@ -38,16 +38,16 @@ int DataHider::find_d(const Mpz& cd) {
     return d;
 }
 
-int DataHider::get_difference(const Mpz& cd1, const Mpz& cd2) {
+Difference DataHider::get_difference(const Mpz& cd1, const Mpz& cd2) const {
     int d1 = this->find_d(cd1);
     int d2 = this->find_d(cd2);
     if (d1 < this->MAX_VALUE) {
-        return d1;
+        return Difference(d1, 1);
     }
-    return d2;
+    return Difference(d2, -1);
 }
 
-int DataHider::compare(const Mpz& cd1, const Mpz& cd2) {
+int DataHider::compare(const Mpz& cd1, const Mpz& cd2) const {
     int d1 = this->find_d(cd1);
     if (d1 < this->MAX_VALUE) {
         // P1 >= P2

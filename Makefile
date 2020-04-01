@@ -3,8 +3,8 @@ CFLAGS = -Wall
 LFLAGS = -lgmpxx -lgmp
 FILE_OUT = Programme
 
-all: main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o
-	$(CC) $(CFLAGS) -o $(FILE_OUT) main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o $(LFLAGS)
+all: main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o Utils.o
+	$(CC) $(CFLAGS) -o $(FILE_OUT) main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o Utils.o $(LFLAGS)
 
 main.o: main.cpp Mpz.h
 	$(CC) $(CFLAGS) -c -o main.o main.cpp $(LFLAGS)
@@ -18,9 +18,14 @@ Generator.o: Generator.cpp Generator.h Mpz.h
 Paillier.o: Paillier.cpp Paillier.h Mpz.h
 	$(CC) $(CFLAGS) -c -o Paillier.o Paillier.cpp $(LFLAGS)
 
-DataHider.o: DataHider.cpp DataHider.h Mpz.h
+DataHider.o: DataHider.cpp DataHider.h Mpz.h Difference.h
 	$(CC) $(CFLAGS) -c -o DataHider.o DataHider.cpp $(LFLAGS)
 
 Histogram.o: Histogram.cpp Histogram.h
 	$(CC) $(CFLAGS) -c -o Histogram.o Histogram.cpp $(LFLAGS)
 
+Difference.o: Difference.cpp Difference.h
+	$(CC) $(CFLAGS) -c -o Difference.o Difference.cpp $(LFLAGS)
+
+Utils.o: Utils.cpp Utils.h Mpz.h Generator.h Paillier.h DataHider.h Histogram.h Difference.h
+	$(CC) $(CFLAGS) -c -o Utils.o Utils.cpp $(LFLAGS)

@@ -4,6 +4,7 @@
 #include "Paillier.h"
 #include "DataHider.h"
 #include "Histogram.h"
+#include "Utils.h"
 
 #include <vector>
 #include <cstdlib>
@@ -14,11 +15,11 @@ int MAX_VALUE = 255;
 unsigned long int KS = 1926492749; // TODO: Choose a better number
 std::string W = "00101000111010101";
 
-std::vector< std::vector<int> > generate_data(const unsigned int rows, const unsigned int columns) {
+std::vector< std::vector<Mpz> > generate_data(const unsigned int rows, const unsigned int columns) {
     std::srand(std::time(NULL));
-    std::vector< std::vector<int> > matrix;
+    std::vector< std::vector<Mpz> > matrix;
     for (unsigned int i = 0; i < rows; i++) {
-        std::vector<int> row;
+        std::vector<Mpz> row;
         for (unsigned int j = 0; j < columns; j++){
             row.push_back(std::rand() % (MAX_VALUE + 1));
         }
@@ -40,7 +41,7 @@ void print_matrix(std::vector< std::vector<T> > matrix, const unsigned int rows,
 }
 
 void test_matrix() {
-    std::vector< std::vector<int> > matrix = generate_data(5, 5);
+    std::vector< std::vector<Mpz> > matrix = generate_data(5, 5);
 
     print_matrix(matrix, 5, 5);
 }
@@ -87,7 +88,7 @@ std::vector<Mpz> get_cdw(const Mpz& c1, const Mpz& c2, int d, int EP, int w, con
     return result;
 }
 
-void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paillier) {
+void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paillier, const int& EP) {
     Generator generator_r2(KS);
     Mpz r2;
     Mpz theta_er, theta_1, theta_2, theta_g;
@@ -111,15 +112,16 @@ void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paill
         cdw_matrix[row][2] = (encoded_matrix[row][2] * theta_1).mod(paillier.N2);
 
         // histogram
-        int d = dataHider.get_difference(cdw_matrix[row][0], cdw_matrix[row][2]);
+        int d = dataHider.get_difference(cdw_matrix[row][0], cdw_matrix[row][2]).difference;
 
         d_list.push_back(d);
 
         histogram.add(d);
+        std::cout << "decoe r2(row = " << row << ") = " << r2 << std::endl;
 
     }
     theta_g = (paillier.N + 1).invert(paillier.N2);
-    int EP = 4; //histogram.get_max_key(); TODO: FIX THIS PROBLEM
+   // int EP = 4; //histogram.get_max_key(); TODO: FIX THIS PROBLEM
     std::cout << "max d = " << EP << std::endl;
     int cmp;
     // we get c1 and c2
@@ -188,31 +190,12 @@ int main() {
     encoded1 = paillier.encode(pixel1, r);
     encoded2 = paillier.encode(pixel2, r);
 
-    //encoded3 = encoded2 * paillier.encode(0, r2);
-    std::cout << "r = " << r << std::endl;
-    std::cout << "r2 = " << r2 << std::endl;
-
-
-    std::cout << "Pailler(" << pixel1 << ") = " << encoded1 << std::endl;
-    std::cout << "Pailler(" << pixel2 << ") = " << encoded2 << std::endl;
-    //std::cout << "Pailler(" << encoded2 << ") = " << encoded3 << std::endl;
-
-    std::cout << "Decode Pailler = " << paillier.decode(encoded1) << std::endl;
-    std::cout << "Decode Pailler = " << paillier.decode(encoded2) << std::endl;
-   // std::cout << "Decode Pailler = " << paillier.decode(encoded3) << std::endl;
-
     DataHider dataHider(p, q);
-    std::list<Mpz> list = dataHider.get_encrypted_differences(encoded1, encoded2);
-    std::cout << "Cd1(con lista) = " << list.front() << std::endl;
-    std::cout << "Cd2(con lista) = " << list.back() << std::endl;
-
-    std::cout << "d(con lista) = " << dataHider.get_difference(list.front(), list.back()) << std::endl;
-
     //test_matrix();
 
     std::cout << "\n\nTESTEANDO CON MATRIZ\n\n" << std::endl;
 
-    std::vector< std::vector<Mpz> > original_matrix = generate_test_matrix();
+    std::vector< std::vector<Mpz> > original_matrix = generate_data(6,3);//generate_test_matrix();
     std::vector< std::vector<Mpz> > c_matrix;
     std::vector< std::vector<Mpz> > cd_matrix;
     std::vector< std::vector<Mpz> > final_matrix;
@@ -221,56 +204,61 @@ int main() {
     Generator generator_r1;
     Generator generator_r2(KS);
 
-    std::vector<int> d_list;
+    std::vector<Difference> d_list;
     Histogram histogram;
 
-    for (int row = 0; row < 6; row++) {
-        std::cout << "\n****************************" << std::endl;
-        std::cout << "Row " << row + 1 << "" << std::endl;
-        std::cout << "****************************\n" << std::endl;
+    c_matrix = Utils::paillierEncodeMatrix(original_matrix, paillier, generator_r1, 0, 2);
+    cd_matrix = Utils::getEncryptedDifferences(c_matrix, dataHider, 0, 2);
+    d_list = Utils::getDifferences(cd_matrix, dataHider, 0, 2);
+    histogram = Utils::generateHistogram(d_list, dataHider, 0, 2);
 
-        pixel1 = original_matrix[row][0];
-        pixel2 = original_matrix[row][2];
-
-        c_matrix.push_back(original_matrix[row]);
-        cd_matrix.push_back(original_matrix[row]);
-        final_matrix.push_back(original_matrix[row]);
-
-        r = generator_r1.generate_prime(10, 24);
-
-        encoded1 = paillier.encode(pixel1, r);
-        encoded2 = paillier.encode(pixel2, r);
-
-        c_matrix[row][0] = encoded1;
-        c_matrix[row][2] = encoded2;
-
-       //encoded3 = encoded2 * paillier.encode(0, r2);
-        std::cout << "r1 = " << r << std::endl;
-        std::cout << "r2 = " << r2 << std::endl;
-
-
-        std::cout << "Pailler(" << pixel1 << ") = " << encoded1 << std::endl;
-        std::cout << "Pailler(" << pixel2 << ") = " << encoded2 << std::endl;
-        //std::cout << "Pailler(" << encoded2 << ") = " << encoded3 << std::endl;
-
-        std::cout << "Decode Pailler = " << paillier.decode(encoded1) << std::endl;
-        std::cout << "Decode Pailler = " << paillier.decode(encoded2) << std::endl;
-        //std::cout << "Decode Pailler = " << paillier.decode(encoded3) << std::endl;
-
-        std::list<Mpz> list2 = dataHider.get_encrypted_differences(encoded1, encoded2);
-        std::cout << "Cd1(con lista) = " << list2.front() << std::endl;
-        std::cout << "Cd2(con lista) = " << list2.back() << std::endl;
-
-        cd_matrix[row][0] = list2.front();
-        cd_matrix[row][2] = list2.back();
-
-        int d = dataHider.get_difference(list2.front(), list2.back());
-        std::cout << "d(con lista) = " << d << std::endl;
-
-        d_list.push_back(d);
-
-        histogram.add(d);
-    }
+//    for (int row = 0; row < 6; row++) {
+//        std::cout << "\n****************************" << std::endl;
+//        std::cout << "Row " << row + 1 << "" << std::endl;
+//        std::cout << "****************************\n" << std::endl;
+//
+//        pixel1 = original_matrix[row][0];
+//        pixel2 = original_matrix[row][2];
+//
+//        c_matrix.push_back(original_matrix[row]);
+//        cd_matrix.push_back(original_matrix[row]);
+//        final_matrix.push_back(original_matrix[row]);
+//
+//        r = generator_r1.generate_prime(10, 24);
+//
+//        encoded1 = paillier.encode(pixel1, r);
+//        encoded2 = paillier.encode(pixel2, r);
+//
+//        c_matrix[row][0] = encoded1;
+//        c_matrix[row][2] = encoded2;
+//
+//       //encoded3 = encoded2 * paillier.encode(0, r2);
+//        std::cout << "r1 = " << r << std::endl;
+//        std::cout << "r2 = " << r2 << std::endl;
+//
+//
+//        std::cout << "Pailler(" << pixel1 << ") = " << encoded1 << std::endl;
+//        std::cout << "Pailler(" << pixel2 << ") = " << encoded2 << std::endl;
+//        //std::cout << "Pailler(" << encoded2 << ") = " << encoded3 << std::endl;
+//
+//        std::cout << "Decode Pailler = " << paillier.decode(encoded1) << std::endl;
+//        std::cout << "Decode Pailler = " << paillier.decode(encoded2) << std::endl;
+//        //std::cout << "Decode Pailler = " << paillier.decode(encoded3) << std::endl;
+//
+//        std::list<Mpz> list2 = dataHider.get_encrypted_differences(encoded1, encoded2);
+//        std::cout << "Cd1(con lista) = " << list2.front() << std::endl;
+//        std::cout << "Cd2(con lista) = " << list2.back() << std::endl;
+//
+//        cd_matrix[row][0] = list2.front();
+//        cd_matrix[row][2] = list2.back();
+//
+//        int d = dataHider.get_difference(list2.front(), list2.back());
+//        std::cout << "d(con lista) = " << d << std::endl;
+//
+//        d_list.push_back(d);
+//
+//        histogram.add(d);
+//    }
     int EP = histogram.get_max_key();
     std::cout << "\n\nMax value = " << EP << std::endl;
     std::cout << "\n\nStarting histogram part\n\n" << std::endl;
@@ -278,7 +266,8 @@ int main() {
 
     int w_pos = 0;
     for (int row = 0; row < 6; row++) {
-        int acutal_d = d_list[row];
+        final_matrix.push_back(original_matrix[row]);
+        int acutal_d = d_list[row].difference;
         int cmp = dataHider.compare(cd_matrix[row][0], cd_matrix[row][2]);
         std::vector<Mpz> result;
         char w_ = W[w_pos] - '0';
@@ -299,6 +288,7 @@ int main() {
 
         r2 = generator_r2.generate_prime(10, 24);
 
+        std::cout << "r2(row = " << row << ") = " << r2 << std::endl;
         std::cout << "Cdw2' = " << (cdw2 * paillier.encode(0, r2)).mod(N2) << std::endl;
 
         final_matrix[row][0] = cdw1;
@@ -306,5 +296,5 @@ int main() {
     }
     print_matrix(original_matrix, 6, 3);
     std::cout << "\nStarting Decode\n" << std::endl;
-    decode(final_matrix, paillier);
+    decode(final_matrix, paillier, EP);
 }

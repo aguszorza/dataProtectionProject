@@ -3,6 +3,7 @@
 
 
 #include "Mpz.h"
+#include "Difference.h"
 #include <list>
 
 class DataHider {
@@ -10,18 +11,18 @@ private:
     Mpz N, N2, FI, g, p, q;
     int MAX_VALUE;
 
-    int find_d(const Mpz& cd1);
+    int find_d(const Mpz& cd1) const;
 
 public:
     DataHider(const Mpz& p, const Mpz& q);
 
     ~DataHider();
 
-    std::list<Mpz> get_encrypted_differences(const Mpz& c1, const Mpz& c2);
+    std::list<Mpz> get_encrypted_differences(const Mpz& c1, const Mpz& c2) const;
 
-    int get_difference(const Mpz& cd1, const Mpz& cd2);
+    Difference get_difference(const Mpz& cd1, const Mpz& cd2) const;
 
-    int compare(const Mpz& cd1, const Mpz& cd2);
+    int compare(const Mpz& cd1, const Mpz& cd2) const;
 };
 
 
