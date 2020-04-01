@@ -39,6 +39,9 @@ public:
 
     static Matrix paillierDecodeMatrix(const Matrix& matrix, const Paillier& paillier, const int& column_1,
             const int& column_2);
+
+    static std::string getTattoo(const std::vector<Difference>& differences, TattooAggregator& tattooAggregator,
+            const int& EP);
 };
 
 

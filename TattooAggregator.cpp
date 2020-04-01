@@ -61,3 +61,11 @@ std::list<Mpz> TattooAggregator::removeTattoo(const Mpz& cw1, const Mpz& cw2, co
 
     return result;
 }
+
+void TattooAggregator::getTattooBit(std::string& tattoo, const Difference& difference, const int& EP) {
+    if (difference.difference == EP) {
+        tattoo += "0";
+    } else if (difference.difference == EP + 1) {
+        tattoo += "1";
+    }
+}

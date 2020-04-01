@@ -106,3 +106,12 @@ Matrix Utils::paillierDecodeMatrix(const Matrix& matrix, const Paillier& paillie
     }
     return result;
 }
+
+std::string Utils::getTattoo(const std::vector<Difference>& differences, TattooAggregator& tattooAggregator,
+        const int& EP) {
+    std::string tattoo;
+    for (unsigned int position = 0; position < differences.size(); position++) {
+        tattooAggregator.getTattooBit(tattoo, differences[position], EP);
+    }
+    return tattoo;
+}

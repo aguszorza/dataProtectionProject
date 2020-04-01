@@ -14,7 +14,8 @@
 
 int MAX_VALUE = 256;
 unsigned long int KS = 1926492749; // TODO: Choose a better number
-std::string W = "00101000111010101";
+std::string TATTOO = "10101000111010101";
+std::string EMPTY_TATTOO = "";
 int COLUMN_1 = 0;
 int COLUMN_2 = 2;
 
@@ -28,7 +29,7 @@ Matrix encode(const Mpz& p, const Mpz& q, const Matrix& matrix, int& EP) {
     Mpz N = p * q;
     Mpz N2 = N * N;
     Mpz g = N + 1;
-    TattooAggregator tattooAggregator(g, N2, W);
+    TattooAggregator tattooAggregator(g, N2, TATTOO);
     Paillier paillier(p, q);
     DataHider dataHider(p, q);
 
@@ -61,7 +62,7 @@ Matrix decode(const Mpz& p, const Mpz& q, const Matrix& matrix, const int& EP) {
     Mpz N2 = N * N;
     Mpz g = N + 1;
 
-    TattooAggregator tattooAggregator(g, N2, W); // TODO: w is not necessary
+    TattooAggregator tattooAggregator(g, N2, EMPTY_TATTOO); // TODO: w is not necessary
     Paillier paillier(p, q);
     DataHider dataHider(p, q);
 
@@ -72,6 +73,7 @@ Matrix decode(const Mpz& p, const Mpz& q, const Matrix& matrix, const int& EP) {
     cdw_matrix = Utils::getEncryptedDifferences(cw_matrix, dataHider, COLUMN_1, COLUMN_2);
     d_list = Utils::getDifferences(cdw_matrix, dataHider, COLUMN_1, COLUMN_2);
 
+    std::cout << "Added tattoo = " << Utils::getTattoo(d_list, tattooAggregator, EP) << std::endl;
     // we get c1 and c2
     c_matrix = Utils::removeTattoo(cw_matrix, d_list, tattooAggregator, EP, 0, 2);
 
