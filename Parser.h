@@ -13,6 +13,18 @@ private:
     std::string tattoo;
     unsigned long int KS;
 
+    void validateTattoo();
+
+    void validateColumns();
+
+    void validateRows();
+
+    void validateColumn1();
+
+    void validateColumn2();
+
+    void validateColumnDifference();
+
 public:
     Parser(int argc, char *argv[]);
 

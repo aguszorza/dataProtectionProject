@@ -14,7 +14,7 @@
 #include <string>
 
 int MAX_VALUE = 256;
-unsigned long int KS = 1926492749; // TODO: Choose a better number
+unsigned long int KS = 637353949689553;
 std::string TATTOO("10101000111010101");
 std::string EMPTY_TATTOO = "";
 int COLUMN_1 = 0;
@@ -133,14 +133,23 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     // We get the values
-    Parser parser(argc, argv);
-    TATTOO = parser.getTattoo(TATTOO);
-    COLUMNS = parser.getColumns(COLUMNS);
-    ROWS = parser.getRows(ROWS);
-    COLUMN_1 = parser.getColumn1(COLUMN_1);
-    COLUMN_2 = parser.getColumn2(COLUMN_2);
-    KS = parser.getKs(KS);
-    MATRIX_FILE = parser.getFilename(MATRIX_FILE);
+    try {
+        Parser parser(argc, argv);
+        TATTOO = parser.getTattoo(TATTOO);
+        COLUMNS = parser.getColumns(COLUMNS);
+        ROWS = parser.getRows(ROWS);
+        COLUMN_1 = parser.getColumn1(COLUMN_1);
+        COLUMN_2 = parser.getColumn2(COLUMN_2);
+        KS = parser.getKs(KS);
+        MATRIX_FILE = parser.getFilename(MATRIX_FILE);
+        if (COLUMN_1 == COLUMN_2) {
+            throw std::runtime_error("Invalid value Column 1 and 2: they should have a different value");
+        }
+    } catch (std::runtime_error& error)  {
+        std::cout << error.what() << std::endl;
+        return 1;
+    }
+
 
     // We initialize the variables we are going to use
     Generator generator;
