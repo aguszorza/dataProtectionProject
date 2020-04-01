@@ -96,6 +96,19 @@ Matrix Utils::removeTattoo(const Matrix& matrix, const std::vector<Difference>& 
     return result;
 }
 
+Matrix Utils::removeAdditionalData(const Matrix& matrix, const std::vector<Difference>& differences,
+        TattooAggregator& tattooAggregator, const int& EP, const int& column_1, const int& column_2) {
+    Matrix result;
+    std::list<Mpz> list;
+    for (unsigned int row = 0; row < matrix.size(); row++) {
+        result.push_back(matrix[row]);
+        list = tattooAggregator.removeAdditionalData(result[row][column_1], result[row][column_2], differences[row], EP);
+        result[row][column_1] = list.front();
+        result[row][column_2] = list.back();
+    }
+    return result;
+}
+
 Matrix Utils::paillierDecodeMatrix(const Matrix& matrix, const Paillier& paillier, const int& column_1,
         const int& column_2) {
     Matrix result;

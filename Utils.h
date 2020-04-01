@@ -37,6 +37,9 @@ public:
     static Matrix removeTattoo(const Matrix& matrix, const std::vector<Difference>& differences,
             TattooAggregator& tattooAggregator, const int& EP, const int& column_1, const int& column_2);
 
+    static Matrix removeAdditionalData(const Matrix& matrix, const std::vector<Difference>& differences,
+            TattooAggregator& tattooAggregator, const int& EP, const int& column_1, const int& column_2);
+
     static Matrix paillierDecodeMatrix(const Matrix& matrix, const Paillier& paillier, const int& column_1,
             const int& column_2);
 

@@ -88,7 +88,7 @@ Matrix decode_3_3_2(const Mpz& p, const Mpz& q, const Matrix& matrix, const int&
     Mpz N2 = N * N;
     Mpz g = N + 1;
 
-    TattooAggregator tattooAggregator(g, N2, EMPTY_TATTOO); // TODO: w is not necessary
+    TattooAggregator tattooAggregator(g, N2, EMPTY_TATTOO);
     Paillier paillier(p, q);
     DataHider dataHider(p, q);
 
@@ -101,7 +101,9 @@ Matrix decode_3_3_2(const Mpz& p, const Mpz& q, const Matrix& matrix, const int&
     d_list = Utils::getDecodedDifferences(pw_matrix, COLUMN_1, COLUMN_2);
     std::cout << "Added tattoo = " << Utils::getTattoo(d_list, tattooAggregator, EP) << std::endl;
 
-    return matrix;
+    decoded_matrix = Utils::removeAdditionalData(pw_matrix, d_list, tattooAggregator, EP, COLUMN_1, COLUMN_2);
+
+    return decoded_matrix;
 }
 
 int main() {
@@ -118,10 +120,10 @@ int main() {
     // We create a matrix with random data
     Matrix original_matrix(6,3, MAX_VALUE);//generate_test_matrix();
 
-    original_matrix[0][0] = 100;
-    original_matrix[0][2] = 130;
-    original_matrix[1][0] = 73;
-    original_matrix[1][2] = 103;
+//    original_matrix[0][0] = 100;
+//    original_matrix[0][2] = 130;
+//    original_matrix[1][0] = 73;
+//    original_matrix[1][2] = 103;
 
     original_matrix.printMatrix(5);
 
@@ -138,5 +140,5 @@ int main() {
     printTitle("Starting decode (approach 3.3.2)");
     // We decode the encoded matrix using the approach 3.3.2 from the paper
     decoded_matrix = decode_3_3_2(p, q, encoded_matrix, EP);
-    //decoded_matrix.printMatrix(5);
+    decoded_matrix.printMatrix(5);
 }

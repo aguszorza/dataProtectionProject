@@ -22,6 +22,8 @@ public:
 
     std::list<Mpz> removeTattoo(const Mpz& cw1, const Mpz& cw2, const Difference& difference, const int& EP);
 
+    std::list<Mpz> removeAdditionalData(const Mpz& cw1, const Mpz& cw2, const Difference& difference, const int& EP);
+
     void getTattooBit(std::string& tattoo, const Difference& difference, const int& EP);
 };
 
