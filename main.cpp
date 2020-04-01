@@ -94,53 +94,27 @@ void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paill
     Generator generator_r2(KS);
     Mpz r2;
     std::vector<Difference> d_list;
-    std::vector< std::vector<Mpz> > encoded_matrix, encoded_matrix2;
-    std::vector< std::vector<Mpz> > cdw_matrix;
+    std::vector< std::vector<Mpz> > cw_matrix, c_matrix, cdw_matrix, encoded_matrix2, decoded_matrix;
     Histogram histogram;
     DataHider dataHider(paillier.p, paillier.q);
     Mpz g = paillier.p * paillier.q + 1; // TODO: get it in another way
     Mpz N2 = paillier.p * paillier.q *  paillier.p * paillier.q; // TODO: get it in another way
     TattooAggregator tattooAggregator(g, N2, W); // TODO: w is not necessary
 
-    encoded_matrix = Utils::paillierRemoveVoidEncrypting(matrix, paillier, generator_r2, 0, 2);
-    encoded_matrix2 = encoded_matrix;
-    cdw_matrix = Utils::getEncryptedDifferences(encoded_matrix, dataHider, 0, 2);
+    cw_matrix = Utils::paillierRemoveVoidEncrypting(matrix, paillier, generator_r2, 0, 2);
+    encoded_matrix2 = cw_matrix;
+    cdw_matrix = Utils::getEncryptedDifferences(cw_matrix, dataHider, 0, 2);
     d_list = Utils::getDifferences(cdw_matrix, dataHider, 0, 2);
 
 
     std::cout << "max d = " << EP << std::endl;
-    int cmp;
     // we get c1 and c2
-    encoded_matrix = Utils::removeTattoo(encoded_matrix, d_list, tattooAggregator, EP, 0, 2);
+    c_matrix = Utils::removeTattoo(cw_matrix, d_list, tattooAggregator, EP, 0, 2);
 
-    for (int row = 0; row < 6; row++) {
-        encoded_matrix2[row][0] = paillier.decode(encoded_matrix2[row][0]);
-        encoded_matrix2[row][2] = paillier.decode(encoded_matrix2[row][2]);
-    }
+    decoded_matrix = Utils::paillierDecodeMatrix(c_matrix, paillier, 0, 2);
 
-    std::cout << "\nBefore substracting 1\n" << std::endl;
-    print_matrix(encoded_matrix2, 6, 3);
-
-    for (int row = 0; row < 6; row++) {
-        cmp = dataHider.compare(cdw_matrix[row][0], cdw_matrix[row][2]);
-        std::cout << "CMP row " << row << " = " << cmp << std::endl;
-        if (d_list[row].difference == EP){
-            std::cout << "w agregada = 0" << std::endl;
-        }
-        if (d_list[row].difference == EP + 1){
-            std::cout << "w agregada = 1" << std::endl;
-        }
-        if (cmp > 0) {
-            if (d_list[row].difference > EP) {
-                encoded_matrix2[row][0] = encoded_matrix2[row][0] - 1;
-            }
-        } else {
-            if (d_list[row].difference > EP) {
-                encoded_matrix2[row][2] = encoded_matrix2[row][2] - 1;
-            }
-        }
-    }
-    print_matrix(encoded_matrix2, 6, 3);
+    std::cout << "DECODIFICANDO DIRECTAMENTE" << std::endl;
+    print_matrix(decoded_matrix, 6, 3);
 }
 
 int main() {

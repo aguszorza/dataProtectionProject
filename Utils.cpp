@@ -97,3 +97,14 @@ std::vector< std::vector<Mpz> > Utils::removeTattoo(const std::vector< std::vect
     }
     return result;
 }
+
+std::vector< std::vector<Mpz> > Utils::paillierDecodeMatrix(const std::vector< std::vector<Mpz> >& matrix,
+        const Paillier& paillier, const int& column_1, const int& column_2) {
+    std::vector< std::vector<Mpz> > result;
+    for (unsigned int row = 0; row < matrix.size(); row++) {
+        result.push_back(matrix[row]);
+        result[row][column_1] = paillier.decode(result[row][column_1]);
+        result[row][column_2] = paillier.decode(result[row][column_2]);
+    }
+    return result;
+}

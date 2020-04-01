@@ -37,6 +37,9 @@ public:
     static std::vector< std::vector<Mpz> > removeTattoo(const std::vector< std::vector<Mpz> >& matrix,
             const std::vector<Difference>& differences, TattooAggregator& tattooAggregator, const int& EP,
             const int& column_1, const int& column_2);
+
+    static std::vector< std::vector<Mpz> > paillierDecodeMatrix(const std::vector< std::vector<Mpz> >& matrix,
+            const Paillier& paillier, const int& column_1, const int& column_2);
 };
 
 
