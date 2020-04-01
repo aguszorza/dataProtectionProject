@@ -1,6 +1,8 @@
 #include "Matrix.h"
 #include <ctime>
 #include <cstdlib>
+#include <sstream>
+
 
 
 Matrix::Matrix() {}
@@ -18,6 +20,24 @@ Matrix::Matrix(const unsigned int rows, const unsigned int columns, int maxValue
 
 Matrix::Matrix(const std::vector< std::vector<Mpz> >& matrix) {
     this->matrix = matrix;
+}
+
+
+Matrix::Matrix(const std::string& filename) {
+    std::ifstream file(filename.c_str());
+    std::string line;
+
+    while (std::getline(file, line)) {
+        std::vector<Mpz> row;
+        std::stringstream ss (line);
+        std::string element;
+        while (std::getline(ss, element, ',')) {
+            Mpz number(element);
+            row.push_back(number);
+        }
+        this->matrix.push_back(row);
+    }
+    file.close();
 }
 
 Matrix::~Matrix() {}

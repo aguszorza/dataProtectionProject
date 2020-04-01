@@ -15,7 +15,7 @@
 
 int MAX_VALUE = 256;
 unsigned long int KS = 1926492749; // TODO: Choose a better number
-std::string TATTOO = "10101000111010101";
+std::string TATTOO("10101000111010101");
 std::string EMPTY_TATTOO = "";
 int COLUMN_1 = 0;
 int COLUMN_2 = 2;
@@ -127,17 +127,6 @@ Matrix decode_3_3_2(const Mpz& p, const Mpz& q, const Matrix& matrix, const int&
     return decoded_matrix;
 }
 
-void test(int argc, char *argv[]) {
-    Parser parser(argc, argv);
-    std::cout << "Columnas = " << parser.getColumns(3) << std::endl;
-    std::cout << "Filas = " << parser.getRows(6) << std::endl;
-    std::cout << "Columna 1 = " << parser.getColumn1(0) << std::endl;
-    std::cout << "Columna 2 = " << parser.getColumn2(2) << std::endl;
-    std::cout << "Ks = " << parser.getKs(KS) << std::endl;
-    std::cout << "Tattoo = " << parser.getTattoo(TATTOO) << std::endl;
-    std::cout << "Filename = " << parser.getFilename("archivo") << std::endl;
-}
-
 int main(int argc, char *argv[]) {
     if (argc % 2 == 0) {
         std::cout << "Parameter input error" << std::endl;
@@ -164,7 +153,12 @@ int main(int argc, char *argv[]) {
     printTitle("Original Matrix");
 
     // We create a matrix with random data
-    Matrix original_matrix(6,3, MAX_VALUE);//generate_test_matrix();
+    Matrix original_matrix;
+    if (MATRIX_FILE.empty()) {
+        original_matrix = Matrix(ROWS, COLUMNS, MAX_VALUE);
+    } else {
+        original_matrix = Matrix(MATRIX_FILE);
+    }
     saveMatrixInTxt("./output/original", original_matrix);
     saveMatrixInCsv("./output/original", original_matrix);
 

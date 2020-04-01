@@ -11,6 +11,11 @@ Mpz::Mpz(const Mpz &other) {
     mpz_set(this->gmp, other.gmp);
 }
 
+Mpz::Mpz(std::string value) {
+    mpz_init(this->gmp);
+    mpz_set_str(this->gmp, value.c_str(), 10);
+}
+
 Mpz::~Mpz() {
     mpz_clear(this->gmp);
 }

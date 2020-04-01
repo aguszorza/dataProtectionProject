@@ -11,6 +11,8 @@ public:
     /* Builder */
     Mpz(int value = 0);
 
+    Mpz(std::string value);
+
     Mpz(const Mpz &other);
 
     /* Destroyer */

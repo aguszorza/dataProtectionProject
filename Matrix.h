@@ -16,6 +16,8 @@ public:
 
     Matrix(const std::vector< std::vector<Mpz> >& matrix);
 
+    Matrix(const std::string& filename);
+
     ~Matrix();
 
     std::vector<Mpz> operator[](size_t row) const;

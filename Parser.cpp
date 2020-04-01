@@ -75,7 +75,7 @@ unsigned long int Parser::getKs(unsigned long int defaultValue) {
 }
 
 std::string Parser::getFilename(std::string defaultValue) {
-    if (this->file == "") {
+    if (this->file.empty()) {
         return defaultValue;
     }
     return this->file;
