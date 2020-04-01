@@ -148,18 +148,31 @@ CMakeFiles/Pailler.dir/Utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Pailler.dir/Utils.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Utils.cpp -o CMakeFiles/Pailler.dir/Utils.cpp.s
 
-CMakeFiles/Pailler.dir/Differences.cpp.o: CMakeFiles/Pailler.dir/flags.make
-CMakeFiles/Pailler.dir/Differences.cpp.o: ../Differences.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Pailler.dir/Differences.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Pailler.dir/Differences.cpp.o -c /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Differences.cpp
+CMakeFiles/Pailler.dir/Difference.cpp.o: CMakeFiles/Pailler.dir/flags.make
+CMakeFiles/Pailler.dir/Difference.cpp.o: ../Difference.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Pailler.dir/Difference.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Pailler.dir/Difference.cpp.o -c /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Difference.cpp
 
-CMakeFiles/Pailler.dir/Differences.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Pailler.dir/Differences.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Differences.cpp > CMakeFiles/Pailler.dir/Differences.cpp.i
+CMakeFiles/Pailler.dir/Difference.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Pailler.dir/Difference.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Difference.cpp > CMakeFiles/Pailler.dir/Difference.cpp.i
 
-CMakeFiles/Pailler.dir/Differences.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Pailler.dir/Differences.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Differences.cpp -o CMakeFiles/Pailler.dir/Differences.cpp.s
+CMakeFiles/Pailler.dir/Difference.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Pailler.dir/Difference.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Difference.cpp -o CMakeFiles/Pailler.dir/Difference.cpp.s
+
+CMakeFiles/Pailler.dir/TattooAggregator.cpp.o: CMakeFiles/Pailler.dir/flags.make
+CMakeFiles/Pailler.dir/TattooAggregator.cpp.o: ../TattooAggregator.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Pailler.dir/TattooAggregator.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Pailler.dir/TattooAggregator.cpp.o -c /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/TattooAggregator.cpp
+
+CMakeFiles/Pailler.dir/TattooAggregator.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Pailler.dir/TattooAggregator.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/TattooAggregator.cpp > CMakeFiles/Pailler.dir/TattooAggregator.cpp.i
+
+CMakeFiles/Pailler.dir/TattooAggregator.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Pailler.dir/TattooAggregator.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/agustin/Escritorio/Facu-IMT/cyber/Pailler/TattooAggregator.cpp -o CMakeFiles/Pailler.dir/TattooAggregator.cpp.s
 
 # Object files for target Pailler
 Pailler_OBJECTS = \
@@ -170,7 +183,8 @@ Pailler_OBJECTS = \
 "CMakeFiles/Pailler.dir/DataHider.cpp.o" \
 "CMakeFiles/Pailler.dir/Histogram.cpp.o" \
 "CMakeFiles/Pailler.dir/Utils.cpp.o" \
-"CMakeFiles/Pailler.dir/Differences.cpp.o"
+"CMakeFiles/Pailler.dir/Difference.cpp.o" \
+"CMakeFiles/Pailler.dir/TattooAggregator.cpp.o"
 
 # External object files for target Pailler
 Pailler_EXTERNAL_OBJECTS =
@@ -182,10 +196,11 @@ Pailler: CMakeFiles/Pailler.dir/Paillier.cpp.o
 Pailler: CMakeFiles/Pailler.dir/DataHider.cpp.o
 Pailler: CMakeFiles/Pailler.dir/Histogram.cpp.o
 Pailler: CMakeFiles/Pailler.dir/Utils.cpp.o
-Pailler: CMakeFiles/Pailler.dir/Differences.cpp.o
+Pailler: CMakeFiles/Pailler.dir/Difference.cpp.o
+Pailler: CMakeFiles/Pailler.dir/TattooAggregator.cpp.o
 Pailler: CMakeFiles/Pailler.dir/build.make
 Pailler: CMakeFiles/Pailler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable Pailler"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX executable Pailler"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Pailler.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

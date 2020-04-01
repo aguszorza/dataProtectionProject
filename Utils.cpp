@@ -57,28 +57,14 @@ Histogram Utils::generateHistogram(const std::vector<Difference>& differences, c
 }
 
 std::vector< std::vector<Mpz> > Utils::addTattoo(const std::vector< std::vector<Mpz> >& matrix,
-        const std::vector<Difference>& differences, std::string w, const int& column_1, const int& column_2,
-        const int& EP, const Mpz& g) {
+        const std::vector<Difference>& differences, TattooAggregator& tattooAggregator, const int& EP,
+        const int& column_1, const int& column_2) {
     std::vector< std::vector<Mpz> > result;
-    int pos_w = 0;
-    int power;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         result.push_back(matrix[row]);
-        int actual_d = differences[row].difference;
-        int cmp = differences[row].sign;
-        power = 0;
-        if (actual_d > EP) {
-            power = 1;
-        } else if (actual_d == EP) {
-            power = w[pos_w] - '0';
-            pos_w += 1;
-            std::cout << "UTILS: w = " << power << std::endl;
-        }
-        if (cmp > 0) {
-            result[row][column_1] = result[row][column_1] * g.pow(power);
-        } else {
-            result[row][column_2] = result[row][column_2] * g.pow(power);
-        }
+        std::list<Mpz> list = tattooAggregator.tattoo(result[row][column_1], result[row][column_2], differences[row], EP);
+        result[row][column_1] = list.front();
+        result[row][column_2] = list.back();
     }
     return result;
 }

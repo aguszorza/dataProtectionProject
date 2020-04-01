@@ -150,32 +150,32 @@ DataHider.cpp.s:
 	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/DataHider.cpp.s
 .PHONY : DataHider.cpp.s
 
-Differences.o: Differences.cpp.o
+Difference.o: Difference.cpp.o
 
-.PHONY : Differences.o
+.PHONY : Difference.o
 
 # target to build an object file
-Differences.cpp.o:
-	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Differences.cpp.o
-.PHONY : Differences.cpp.o
+Difference.cpp.o:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Difference.cpp.o
+.PHONY : Difference.cpp.o
 
-Differences.i: Differences.cpp.i
+Difference.i: Difference.cpp.i
 
-.PHONY : Differences.i
+.PHONY : Difference.i
 
 # target to preprocess a source file
-Differences.cpp.i:
-	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Differences.cpp.i
-.PHONY : Differences.cpp.i
+Difference.cpp.i:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Difference.cpp.i
+.PHONY : Difference.cpp.i
 
-Differences.s: Differences.cpp.s
+Difference.s: Difference.cpp.s
 
-.PHONY : Differences.s
+.PHONY : Difference.s
 
 # target to generate assembly for a file
-Differences.cpp.s:
-	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Differences.cpp.s
-.PHONY : Differences.cpp.s
+Difference.cpp.s:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Difference.cpp.s
+.PHONY : Difference.cpp.s
 
 Generator.o: Generator.cpp.o
 
@@ -285,6 +285,33 @@ Paillier.cpp.s:
 	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Paillier.cpp.s
 .PHONY : Paillier.cpp.s
 
+TattooAggregator.o: TattooAggregator.cpp.o
+
+.PHONY : TattooAggregator.o
+
+# target to build an object file
+TattooAggregator.cpp.o:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/TattooAggregator.cpp.o
+.PHONY : TattooAggregator.cpp.o
+
+TattooAggregator.i: TattooAggregator.cpp.i
+
+.PHONY : TattooAggregator.i
+
+# target to preprocess a source file
+TattooAggregator.cpp.i:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/TattooAggregator.cpp.i
+.PHONY : TattooAggregator.cpp.i
+
+TattooAggregator.s: TattooAggregator.cpp.s
+
+.PHONY : TattooAggregator.s
+
+# target to generate assembly for a file
+TattooAggregator.cpp.s:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/TattooAggregator.cpp.s
+.PHONY : TattooAggregator.cpp.s
+
 Utils.o: Utils.cpp.o
 
 .PHONY : Utils.o
@@ -351,9 +378,9 @@ help:
 	@echo "... DataHider.o"
 	@echo "... DataHider.i"
 	@echo "... DataHider.s"
-	@echo "... Differences.o"
-	@echo "... Differences.i"
-	@echo "... Differences.s"
+	@echo "... Difference.o"
+	@echo "... Difference.i"
+	@echo "... Difference.s"
 	@echo "... Generator.o"
 	@echo "... Generator.i"
 	@echo "... Generator.s"
@@ -366,6 +393,9 @@ help:
 	@echo "... Paillier.o"
 	@echo "... Paillier.i"
 	@echo "... Paillier.s"
+	@echo "... TattooAggregator.o"
+	@echo "... TattooAggregator.i"
+	@echo "... TattooAggregator.s"
 	@echo "... Utils.o"
 	@echo "... Utils.i"
 	@echo "... Utils.s"

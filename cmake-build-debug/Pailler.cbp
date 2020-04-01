@@ -90,10 +90,10 @@
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/DataHider.h">
 			<Option target="Pailler"/>
 		</Unit>
-		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Differences.cpp">
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Difference.cpp">
 			<Option target="Pailler"/>
 		</Unit>
-		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Differences.h">
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Difference.h">
 			<Option target="Pailler"/>
 		</Unit>
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Generator.cpp">
@@ -118,6 +118,12 @@
 			<Option target="Pailler"/>
 		</Unit>
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Paillier.h">
+			<Option target="Pailler"/>
+		</Unit>
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/TattooAggregator.cpp">
+			<Option target="Pailler"/>
+		</Unit>
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/TattooAggregator.h">
 			<Option target="Pailler"/>
 		</Unit>
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Utils.cpp">

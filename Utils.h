@@ -8,6 +8,7 @@
 #include "DataHider.h"
 #include "Histogram.h"
 #include "Difference.h"
+#include "TattooAggregator.h"
 
 class Utils {
 public:
@@ -27,8 +28,8 @@ public:
             const int& column_1, const int& column_2);
 
     static std::vector< std::vector<Mpz> > addTattoo(const std::vector< std::vector<Mpz> >& matrix,
-            const std::vector<Difference>& differences, std::string w, const int& column_1, const int& column_2,
-            const int& EP,  const Mpz& g);
+            const std::vector<Difference>& differences, TattooAggregator& tattooAggregator, const int& EP,
+            const int& column_1, const int& column_2);
 };
 
 

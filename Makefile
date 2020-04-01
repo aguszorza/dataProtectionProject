@@ -3,8 +3,8 @@ CFLAGS = -Wall
 LFLAGS = -lgmpxx -lgmp
 FILE_OUT = Programme
 
-all: main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o Utils.o
-	$(CC) $(CFLAGS) -o $(FILE_OUT) main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o Utils.o $(LFLAGS)
+all: main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o TattooAggregator.o Utils.o
+	$(CC) $(CFLAGS) -o $(FILE_OUT) main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o TattooAggregator.o Utils.o $(LFLAGS)
 
 main.o: main.cpp Mpz.h
 	$(CC) $(CFLAGS) -c -o main.o main.cpp $(LFLAGS)
@@ -27,5 +27,8 @@ Histogram.o: Histogram.cpp Histogram.h
 Difference.o: Difference.cpp Difference.h
 	$(CC) $(CFLAGS) -c -o Difference.o Difference.cpp $(LFLAGS)
 
-Utils.o: Utils.cpp Utils.h Mpz.h Generator.h Paillier.h DataHider.h Histogram.h Difference.h
+TattooAggregator.o: TattooAggregator.cpp TattooAggregator.h Difference.h Mpz.h
+	$(CC) $(CFLAGS) -c -o TattooAggregator.o TattooAggregator.cpp $(LFLAGS)
+
+Utils.o: Utils.cpp Utils.h Mpz.h Generator.h Paillier.h DataHider.h Histogram.h Difference.h TattooAggregator.h
 	$(CC) $(CFLAGS) -c -o Utils.o Utils.cpp $(LFLAGS)
