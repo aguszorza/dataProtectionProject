@@ -262,38 +262,40 @@ int main() {
     int EP = histogram.get_max_key();
     std::cout << "\n\nMax value = " << EP << std::endl;
     std::cout << "\n\nStarting histogram part\n\n" << std::endl;
-    Mpz cdw1, cdw2;
-
-    int w_pos = 0;
-    for (int row = 0; row < 6; row++) {
-        final_matrix.push_back(original_matrix[row]);
-        int acutal_d = d_list[row].difference;
-        int cmp = dataHider.compare(cd_matrix[row][0], cd_matrix[row][2]);
-        std::vector<Mpz> result;
-        char w_ = W[w_pos] - '0';
-        if (cmp > 0) {
-            result = get_cdw(c_matrix[row][0], c_matrix[row][2], acutal_d, EP, w_, g, w_pos);
-            cdw1 = result.front();
-            cdw2 = result.back();
-        } else {
-            result = get_cdw(c_matrix[row][2], c_matrix[row][0], acutal_d, EP, w_, g, w_pos);
-            cdw2 = result.front();
-            cdw1 = result.back();
-        }
-
-        std::cout << "w = " << W[w_pos] << std::endl;
-        //w_pos += 1; // TODO: add one only if it was EP
-        std::cout << "Cdw1 = " << cdw1 << std::endl;
-        std::cout << "Cdw2 = " << cdw2 << std::endl;
-
-        r2 = generator_r2.generate_prime(10, 24);
-
-        std::cout << "r2(row = " << row << ") = " << r2 << std::endl;
-        std::cout << "Cdw2' = " << (cdw2 * paillier.encode(0, r2)).mod(N2) << std::endl;
-
-        final_matrix[row][0] = cdw1;
-        final_matrix[row][2] = (cdw2 * paillier.encode(0, r2)).mod(N2);
-    }
+    final_matrix = Utils::addTattoo(c_matrix, d_list, W, 0, 2, EP, g);
+    final_matrix = Utils::paillierVoidEncrypting(final_matrix, paillier, generator_r2, 0 , 2);
+//    Mpz cdw1, cdw2;
+//
+//    int w_pos = 0;
+//    for (int row = 0; row < 6; row++) {
+//        final_matrix.push_back(original_matrix[row]);
+//        int acutal_d = d_list[row].difference;
+//        int cmp = dataHider.compare(cd_matrix[row][0], cd_matrix[row][2]);
+//        std::vector<Mpz> result;
+//        char w_ = W[w_pos] - '0';
+//        if (cmp > 0) {
+//            result = get_cdw(c_matrix[row][0], c_matrix[row][2], acutal_d, EP, w_, g, w_pos);
+//            cdw1 = result.front();
+//            cdw2 = result.back();
+//        } else {
+//            result = get_cdw(c_matrix[row][2], c_matrix[row][0], acutal_d, EP, w_, g, w_pos);
+//            cdw2 = result.front();
+//            cdw1 = result.back();
+//        }
+//
+//        std::cout << "w = " << W[w_pos] << std::endl;
+//        //w_pos += 1; // TODO: add one only if it was EP
+//        std::cout << "Cdw1 = " << cdw1 << std::endl;
+//        std::cout << "Cdw2 = " << cdw2 << std::endl;
+//
+//        r2 = generator_r2.generate_prime(10, 24);
+//
+//        std::cout << "r2(row = " << row << ") = " << r2 << std::endl;
+//        std::cout << "Cdw2' = " << (cdw2 * paillier.encode(0, r2)).mod(N2) << std::endl;
+//
+//        final_matrix[row][0] = cdw1;
+//        final_matrix[row][2] = (cdw2 * paillier.encode(0, r2)).mod(N2);
+//    }
     print_matrix(original_matrix, 6, 3);
     std::cout << "\nStarting Decode\n" << std::endl;
     decode(final_matrix, paillier, EP);
