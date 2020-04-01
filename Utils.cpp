@@ -144,3 +144,21 @@ std::vector<Difference> Utils::getDecodedDifferences(const Matrix& matrix, const
     }
     return result;
 }
+
+void Utils::printTitle(const std::string& title) {
+    std::cout << "\n**********************************" << std::endl;
+    std::cout << title << std::endl;
+    std::cout << "**********************************\n" << std::endl;
+}
+
+void Utils::saveMatrixInCsv(const std::string& filename, const Matrix& matrix) {
+    std::ofstream csvFile ((filename + ".csv").c_str());
+    matrix.saveAsCsv(csvFile);
+    csvFile.close();
+}
+
+void Utils::saveMatrixInTxt(const std::string& filename, const Matrix& matrix, int dataWidth) {
+    std::ofstream txtFile ((filename + ".txt").c_str());
+    matrix.saveAsText(txtFile, dataWidth);
+    txtFile.close();
+}

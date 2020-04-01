@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Pailler.dir/DataHider.cpp.o"
   "CMakeFiles/Pailler.dir/Difference.cpp.o"
+  "CMakeFiles/Pailler.dir/Encoder.cpp.o"
   "CMakeFiles/Pailler.dir/Generator.cpp.o"
   "CMakeFiles/Pailler.dir/Histogram.cpp.o"
   "CMakeFiles/Pailler.dir/Matrix.cpp.o"

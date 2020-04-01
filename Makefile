@@ -3,8 +3,8 @@ CFLAGS = -Wall
 LFLAGS = -lgmpxx -lgmp
 FILE_OUT = Programme
 
-all: main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o TattooAggregator.o Utils.o Matrix.o Parser.o
-	$(CC) $(CFLAGS) -o $(FILE_OUT) main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o TattooAggregator.o Matrix.o Utils.o Parser.o $(LFLAGS)
+all: main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o TattooAggregator.o Utils.o Matrix.o Parser.o Encoder.o
+	$(CC) $(CFLAGS) -o $(FILE_OUT) main.o Mpz.o Generator.o Paillier.o DataHider.o Histogram.o Difference.o TattooAggregator.o Matrix.o Utils.o Parser.o Encoder.o $(LFLAGS)
 
 main.o: main.cpp Mpz.h
 	$(CC) $(CFLAGS) -c -o main.o main.cpp $(LFLAGS)
@@ -38,3 +38,6 @@ Utils.o: Utils.cpp Utils.h Mpz.h Generator.h Paillier.h DataHider.h Histogram.h 
 
 Parser.o: Parser.cpp Parser.h
 	$(CC) $(CFLAGS) -c -o Parser.o Parser.cpp $(LFLAGS)
+
+Encoder.o: Encoder.cpp Encoder.h Mpz.h Matrix.h TattooAggregator.h Paillier.h DataHider.h Generator.h Histogram.h Utils.h
+	$(CC) $(CFLAGS) -c -o Encoder.o Encoder.cpp $(LFLAGS)

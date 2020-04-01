@@ -96,6 +96,12 @@
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Difference.h">
 			<Option target="Pailler"/>
 		</Unit>
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Encoder.cpp">
+			<Option target="Pailler"/>
+		</Unit>
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Encoder.h">
+			<Option target="Pailler"/>
+		</Unit>
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Generator.cpp">
 			<Option target="Pailler"/>
 		</Unit>

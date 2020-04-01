@@ -47,6 +47,12 @@ public:
             const int& EP);
 
     static std::vector<Difference> getDecodedDifferences(const Matrix& matrix, const int& column_1, const int& column_2);
+
+    static void printTitle(const std::string& title);
+
+    static void saveMatrixInCsv(const std::string& filename, const Matrix& matrix);
+
+    static void saveMatrixInTxt(const std::string& filename, const Matrix& matrix, int dataWidth);
 };
 
 

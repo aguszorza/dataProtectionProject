@@ -177,6 +177,33 @@ Difference.cpp.s:
 	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Difference.cpp.s
 .PHONY : Difference.cpp.s
 
+Encoder.o: Encoder.cpp.o
+
+.PHONY : Encoder.o
+
+# target to build an object file
+Encoder.cpp.o:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Encoder.cpp.o
+.PHONY : Encoder.cpp.o
+
+Encoder.i: Encoder.cpp.i
+
+.PHONY : Encoder.i
+
+# target to preprocess a source file
+Encoder.cpp.i:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Encoder.cpp.i
+.PHONY : Encoder.cpp.i
+
+Encoder.s: Encoder.cpp.s
+
+.PHONY : Encoder.s
+
+# target to generate assembly for a file
+Encoder.cpp.s:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Encoder.cpp.s
+.PHONY : Encoder.cpp.s
+
 Generator.o: Generator.cpp.o
 
 .PHONY : Generator.o
@@ -435,6 +462,9 @@ help:
 	@echo "... Difference.o"
 	@echo "... Difference.i"
 	@echo "... Difference.s"
+	@echo "... Encoder.o"
+	@echo "... Encoder.i"
+	@echo "... Encoder.s"
 	@echo "... Generator.o"
 	@echo "... Generator.i"
 	@echo "... Generator.s"
