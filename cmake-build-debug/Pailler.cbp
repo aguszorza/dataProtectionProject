@@ -108,6 +108,12 @@
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Histogram.h">
 			<Option target="Pailler"/>
 		</Unit>
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Matrix.cpp">
+			<Option target="Pailler"/>
+		</Unit>
+		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Matrix.h">
+			<Option target="Pailler"/>
+		</Unit>
 		<Unit filename="/home/agustin/Escritorio/Facu-IMT/cyber/Pailler/Mpz.cpp">
 			<Option target="Pailler"/>
 		</Unit>

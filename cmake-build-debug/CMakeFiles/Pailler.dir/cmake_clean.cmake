@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Pailler.dir/Difference.cpp.o"
   "CMakeFiles/Pailler.dir/Generator.cpp.o"
   "CMakeFiles/Pailler.dir/Histogram.cpp.o"
+  "CMakeFiles/Pailler.dir/Matrix.cpp.o"
   "CMakeFiles/Pailler.dir/Mpz.cpp.o"
   "CMakeFiles/Pailler.dir/Paillier.cpp.o"
   "CMakeFiles/Pailler.dir/TattooAggregator.cpp.o"

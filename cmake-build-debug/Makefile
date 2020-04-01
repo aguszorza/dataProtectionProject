@@ -231,6 +231,33 @@ Histogram.cpp.s:
 	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Histogram.cpp.s
 .PHONY : Histogram.cpp.s
 
+Matrix.o: Matrix.cpp.o
+
+.PHONY : Matrix.o
+
+# target to build an object file
+Matrix.cpp.o:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Matrix.cpp.o
+.PHONY : Matrix.cpp.o
+
+Matrix.i: Matrix.cpp.i
+
+.PHONY : Matrix.i
+
+# target to preprocess a source file
+Matrix.cpp.i:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Matrix.cpp.i
+.PHONY : Matrix.cpp.i
+
+Matrix.s: Matrix.cpp.s
+
+.PHONY : Matrix.s
+
+# target to generate assembly for a file
+Matrix.cpp.s:
+	$(MAKE) -f CMakeFiles/Pailler.dir/build.make CMakeFiles/Pailler.dir/Matrix.cpp.s
+.PHONY : Matrix.cpp.s
+
 Mpz.o: Mpz.cpp.o
 
 .PHONY : Mpz.o
@@ -387,6 +414,9 @@ help:
 	@echo "... Histogram.o"
 	@echo "... Histogram.i"
 	@echo "... Histogram.s"
+	@echo "... Matrix.o"
+	@echo "... Matrix.i"
+	@echo "... Matrix.s"
 	@echo "... Mpz.o"
 	@echo "... Mpz.i"
 	@echo "... Mpz.s"

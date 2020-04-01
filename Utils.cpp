@@ -1,8 +1,8 @@
 #include "Utils.h"
 
-std::vector< std::vector<Mpz> > Utils::paillierEncodeMatrix(const std::vector< std::vector<Mpz> >& matrix,
-        const Paillier& paillier, Generator& generator_r1, const int& column_1, const int& column_2) {
-    std::vector< std::vector<Mpz> > result;
+Matrix Utils::paillierEncodeMatrix(const Matrix& matrix, const Paillier& paillier, Generator& generator_r1,
+        const int& column_1, const int& column_2) {
+    Matrix result;
     Mpz r;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         r = generator_r1.generate_prime(10, 24);
@@ -13,9 +13,9 @@ std::vector< std::vector<Mpz> > Utils::paillierEncodeMatrix(const std::vector< s
     return result;
 }
 
-std::vector< std::vector<Mpz> > Utils::paillierVoidEncrypting(const std::vector< std::vector<Mpz> >& matrix,
-        const Paillier& paillier, Generator& generator_r2, const int& column_1, const int& column_2) {
-    std::vector< std::vector<Mpz> > result;
+Matrix Utils::paillierVoidEncrypting(const Matrix& matrix, const Paillier& paillier, Generator& generator_r2,
+        const int& column_1, const int& column_2) {
+    Matrix result;
     Mpz r2;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         result.push_back(matrix[row]);
@@ -25,9 +25,9 @@ std::vector< std::vector<Mpz> > Utils::paillierVoidEncrypting(const std::vector<
     return result;
 }
 
-std::vector< std::vector<Mpz> > Utils::getEncryptedDifferences(const std::vector< std::vector<Mpz> >& matrix,
-        const DataHider& dataHider, const int& column_1, const int& column_2) {
-    std::vector< std::vector<Mpz> > result;
+Matrix Utils::getEncryptedDifferences(const Matrix& matrix, const DataHider& dataHider, const int& column_1,
+        const int& column_2) {
+    Matrix result;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         result.push_back(matrix[row]);
         std::list<Mpz> list = dataHider.get_encrypted_differences(result[row][column_1], result[row][column_2]);
@@ -37,8 +37,8 @@ std::vector< std::vector<Mpz> > Utils::getEncryptedDifferences(const std::vector
     return result;
 }
 
-std::vector<Difference> Utils::getDifferences(const std::vector< std::vector<Mpz> >& matrix, const DataHider& dataHider,
-        const int& column_1, const int& column_2) {
+std::vector<Difference> Utils::getDifferences(const Matrix& matrix, const DataHider& dataHider, const int& column_1,
+        const int& column_2) {
     std::vector<Difference> result;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         Difference d = dataHider.get_difference(matrix[row][column_1], matrix[row][column_2]);
@@ -56,10 +56,9 @@ Histogram Utils::generateHistogram(const std::vector<Difference>& differences, c
     return histogram;
 }
 
-std::vector< std::vector<Mpz> > Utils::addTattoo(const std::vector< std::vector<Mpz> >& matrix,
-        const std::vector<Difference>& differences, TattooAggregator& tattooAggregator, const int& EP,
-        const int& column_1, const int& column_2) {
-    std::vector< std::vector<Mpz> > result;
+Matrix Utils::addTattoo(const Matrix& matrix, const std::vector<Difference>& differences,
+        TattooAggregator& tattooAggregator, const int& EP, const int& column_1, const int& column_2) {
+    Matrix result;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         result.push_back(matrix[row]);
         std::list<Mpz> list = tattooAggregator.tattoo(result[row][column_1], result[row][column_2], differences[row], EP);
@@ -70,9 +69,9 @@ std::vector< std::vector<Mpz> > Utils::addTattoo(const std::vector< std::vector<
 }
 
 
-std::vector< std::vector<Mpz> > Utils::paillierRemoveVoidEncrypting(const std::vector< std::vector<Mpz> >& matrix,
-        const Paillier& paillier, Generator& generator_r2, const int& column_1, const int& column_2) {
-    std::vector< std::vector<Mpz> > result;
+Matrix Utils::paillierRemoveVoidEncrypting(const Matrix& matrix, const Paillier& paillier, Generator& generator_r2,
+        const int& column_1, const int& column_2) {
+    Matrix result;
     Mpz r2, theta_er;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         result.push_back(matrix[row]);
@@ -84,10 +83,9 @@ std::vector< std::vector<Mpz> > Utils::paillierRemoveVoidEncrypting(const std::v
     return result;
 }
 
-std::vector< std::vector<Mpz> > Utils::removeTattoo(const std::vector< std::vector<Mpz> >& matrix,
-        const std::vector<Difference>& differences, TattooAggregator& tattooAggregator, const int& EP,
-        const int& column_1, const int& column_2) {
-    std::vector< std::vector<Mpz> > result;
+Matrix Utils::removeTattoo(const Matrix& matrix, const std::vector<Difference>& differences,
+        TattooAggregator& tattooAggregator, const int& EP, const int& column_1, const int& column_2) {
+    Matrix result;
     std::list<Mpz> list;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         result.push_back(matrix[row]);
@@ -98,9 +96,9 @@ std::vector< std::vector<Mpz> > Utils::removeTattoo(const std::vector< std::vect
     return result;
 }
 
-std::vector< std::vector<Mpz> > Utils::paillierDecodeMatrix(const std::vector< std::vector<Mpz> >& matrix,
-        const Paillier& paillier, const int& column_1, const int& column_2) {
-    std::vector< std::vector<Mpz> > result;
+Matrix Utils::paillierDecodeMatrix(const Matrix& matrix, const Paillier& paillier, const int& column_1,
+        const int& column_2) {
+    Matrix result;
     for (unsigned int row = 0; row < matrix.size(); row++) {
         result.push_back(matrix[row]);
         result[row][column_1] = paillier.decode(result[row][column_1]);

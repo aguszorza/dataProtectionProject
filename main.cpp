@@ -4,6 +4,7 @@
 #include "Paillier.h"
 #include "DataHider.h"
 #include "Histogram.h"
+#include "Matrix.h"
 #include "Utils.h"
 #include "TattooAggregator.h"
 
@@ -90,11 +91,11 @@ std::vector<Mpz> get_cdw(const Mpz& c1, const Mpz& c2, int d, int EP, int w, con
     return result;
 }
 
-void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paillier, const int& EP) {
+void decode(const Matrix& matrix, const Paillier& paillier, const int& EP) {
     Generator generator_r2(KS);
     Mpz r2;
     std::vector<Difference> d_list;
-    std::vector< std::vector<Mpz> > cw_matrix, c_matrix, cdw_matrix, encoded_matrix2, decoded_matrix;
+    Matrix cw_matrix, c_matrix, cdw_matrix, encoded_matrix2, decoded_matrix;
     Histogram histogram;
     DataHider dataHider(paillier.p, paillier.q);
     Mpz g = paillier.p * paillier.q + 1; // TODO: get it in another way
@@ -114,7 +115,7 @@ void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paill
     decoded_matrix = Utils::paillierDecodeMatrix(c_matrix, paillier, 0, 2);
 
     std::cout << "DECODIFICANDO DIRECTAMENTE" << std::endl;
-    print_matrix(decoded_matrix, 6, 3);
+    decoded_matrix.printMatrix(5);
 }
 
 int main() {
@@ -144,11 +145,9 @@ int main() {
 
     std::cout << "\n\nTESTEANDO CON MATRIZ\n\n" << std::endl;
 
-    std::vector< std::vector<Mpz> > original_matrix = generate_data(6,3);//generate_test_matrix();
-    std::vector< std::vector<Mpz> > c_matrix;
-    std::vector< std::vector<Mpz> > cd_matrix;
-    std::vector< std::vector<Mpz> > final_matrix;
-    print_matrix(original_matrix, 6, 3);
+    Matrix original_matrix(6,3, MAX_VALUE + 1);//generate_test_matrix();
+    Matrix c_matrix, cd_matrix, final_matrix;
+    original_matrix.printMatrix(5);
 
     Generator generator_r1;
     Generator generator_r2(KS);
@@ -167,7 +166,7 @@ int main() {
     final_matrix = Utils::addTattoo(c_matrix, d_list, tattooAggregator, EP, 0, 2);
     final_matrix = Utils::paillierVoidEncrypting(final_matrix, paillier, generator_r2, 0 , 2);
 
-    print_matrix(original_matrix, 6, 3);
+    original_matrix.printMatrix(5);
     std::cout << "\nStarting Decode\n" << std::endl;
     decode(final_matrix, paillier, EP);
 }
