@@ -51,6 +51,7 @@ Matrix encode(const Mpz& p, const Mpz& q, const Matrix& matrix, int& EP) {
 
     EP = histogram.get_max_key();
     final_matrix = Utils::addTattoo(c_matrix, d_list, tattooAggregator, EP, COLUMN_1, COLUMN_2);
+    std::cout << "Added tattoo = " << tattooAggregator.getAddedTattoo() << std::endl;
     final_matrix = Utils::paillierVoidEncrypting(final_matrix, paillier, generator_r2, COLUMN_1, COLUMN_2);
 
     return final_matrix;

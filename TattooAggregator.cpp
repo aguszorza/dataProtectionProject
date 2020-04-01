@@ -90,3 +90,15 @@ void TattooAggregator::getTattooBit(std::string& tattoo, const Difference& diffe
         tattoo += "1";
     }
 }
+
+std::string TattooAggregator::getAddedTattoo() {
+    std::string result;
+    for (unsigned int i = 0; i < this->tattoo_position; i++) {
+        if (this->tattoo_data[i] == 1) {
+            result += "1";
+        } else {
+            result += "0";
+        }
+    }
+    return result;
+}
