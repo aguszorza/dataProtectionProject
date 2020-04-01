@@ -55,50 +55,39 @@ Matrix encode(const Mpz& p, const Mpz& q, const Matrix& matrix, int& EP) {
     return final_matrix;
 }
 
-void decode(const Matrix& matrix, const Paillier& paillier, const int& EP) {
+Matrix decode(const Mpz& p, const Mpz& q, const Matrix& matrix, const int& EP) {
     Generator generator_r2(KS);
-    Mpz r2;
-    std::vector<Difference> d_list;
-    Matrix cw_matrix, c_matrix, cdw_matrix, encoded_matrix2, decoded_matrix;
-    Histogram histogram;
-    DataHider dataHider(paillier.p, paillier.q);
-    Mpz g = paillier.p * paillier.q + 1; // TODO: get it in another way
-    Mpz N2 = paillier.p * paillier.q *  paillier.p * paillier.q; // TODO: get it in another way
+    Mpz N = p * q;
+    Mpz N2 = N * N;
+    Mpz g = N + 1;
+
     TattooAggregator tattooAggregator(g, N2, W); // TODO: w is not necessary
+    Paillier paillier(p, q);
+    DataHider dataHider(p, q);
 
-    cw_matrix = Utils::paillierRemoveVoidEncrypting(matrix, paillier, generator_r2, 0, 2);
-    encoded_matrix2 = cw_matrix;
-    cdw_matrix = Utils::getEncryptedDifferences(cw_matrix, dataHider, 0, 2);
-    d_list = Utils::getDifferences(cdw_matrix, dataHider, 0, 2);
+    std::vector<Difference> d_list;
+    Matrix c_matrix, cw_matrix, cdw_matrix, decoded_matrix;
 
+    cw_matrix = Utils::paillierRemoveVoidEncrypting(matrix, paillier, generator_r2, COLUMN_1, COLUMN_2);
+    cdw_matrix = Utils::getEncryptedDifferences(cw_matrix, dataHider, COLUMN_1, COLUMN_2);
+    d_list = Utils::getDifferences(cdw_matrix, dataHider, COLUMN_1, COLUMN_2);
 
-    std::cout << "max d = " << EP << std::endl;
     // we get c1 and c2
     c_matrix = Utils::removeTattoo(cw_matrix, d_list, tattooAggregator, EP, 0, 2);
 
     decoded_matrix = Utils::paillierDecodeMatrix(c_matrix, paillier, 0, 2);
 
-    std::cout << "DECODIFICANDO DIRECTAMENTE" << std::endl;
-    decoded_matrix.printMatrix(5);
+    return decoded_matrix;
 }
 
 int main() {
     // We initialize the variables we are going to use
     Generator generator;
-    Matrix encoded_matrix;
+    Matrix encoded_matrix, decoded_matrix;
     int EP;
 
     Mpz p = generator.generate_prime(512, 24);
     Mpz q = generator.generate_prime(512, 24);
-
-    Paillier paillier(p, q);
-    DataHider dataHider(p, q);
-
-    Mpz N2 = p * p * q * q;
-    Mpz g = p * q + 1;
-    TattooAggregator tattooAggregator(g, N2, W);
-
-
 
     printTitle("Original Matrix");
 
@@ -112,5 +101,6 @@ int main() {
     std::cout << "EP = " << EP << std::endl;
 
     printTitle("Starting decode");
-    decode(encoded_matrix, paillier, EP);
+    decoded_matrix = decode(p, q, encoded_matrix, EP);
+    decoded_matrix.printMatrix(5);
 }

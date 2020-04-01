@@ -14,7 +14,7 @@ private:
     unsigned int tattoo_position;
 
 public:
-    TattooAggregator(Mpz& g, Mpz& N2, std::string& tattoo);
+    TattooAggregator(const Mpz& g, const Mpz& N2, std::string& tattoo);
 
     ~TattooAggregator();
 

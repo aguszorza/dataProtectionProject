@@ -1,7 +1,7 @@
 #include "TattooAggregator.h"
 
 
-TattooAggregator::TattooAggregator(Mpz& g, Mpz& N2, std::string& tattoo) {
+TattooAggregator::TattooAggregator(const Mpz& g, const Mpz& N2, std::string& tattoo) {
     this->g = g;
     this->N2 = N2;
     this->tattoo_position = 0;
