@@ -115,3 +115,19 @@ std::string Utils::getTattoo(const std::vector<Difference>& differences, TattooA
     }
     return tattoo;
 }
+
+std::vector<Difference> Utils::getDecodedDifferences(const Matrix& matrix, const int& column_1, const int& column_2) {
+    std::vector<Difference> result;
+    Mpz d;
+    int sign;
+    for (unsigned int row = 0; row < matrix.size(); row++) {
+        d = matrix[row][column_1] - matrix[row][column_2];
+        sign = 1;
+        if (d < 0 ) {
+            sign = -1;
+        }
+        Difference difference(d.abs().to_int(), sign);
+        result.push_back(difference);
+    }
+    return result;
+}

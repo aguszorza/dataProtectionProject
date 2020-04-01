@@ -58,11 +58,25 @@ public:
     Mpz& operator=(const unsigned long int& value);
 
     /* overwrite comparison operators */
+    bool operator>(const unsigned long int& other) const;
+
+    bool operator>(const Mpz& other) const;
+
+    bool operator<(const unsigned long int& other) const;
+
     bool operator<(const Mpz& other) const;
 
     bool operator!=(const Mpz& other) const;
 
+    bool operator!=(const unsigned long int& other) const;
+
+    bool operator==(const Mpz& other) const;
+
+    bool operator==(const unsigned long int& other) const;
+
     /* power */
+    Mpz abs() const;
+
     Mpz pow(const unsigned long int& power) const;
 
     Mpz powm(const Mpz& exp, const Mpz& mod) const;
@@ -86,6 +100,10 @@ public:
 
     /* Calculate the least common multiple */
     Mpz lcm(const Mpz& other) const;
+
+    unsigned long int to_uint();
+
+    signed long int to_int();
 
     friend std::ostream& operator<<(std::ostream &os, const Mpz& value);
 };

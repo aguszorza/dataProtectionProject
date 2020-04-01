@@ -42,6 +42,8 @@ public:
 
     static std::string getTattoo(const std::vector<Difference>& differences, TattooAggregator& tattooAggregator,
             const int& EP);
+
+    static std::vector<Difference> getDecodedDifferences(const Matrix& matrix, const int& column_1, const int& column_2);
 };
 
 

@@ -115,6 +115,21 @@ Mpz& Mpz::operator=(const unsigned long int& value) {
     return *this;
 }
 
+bool Mpz::operator>(const unsigned long int& other) const {
+    int result = mpz_cmp_ui(this->gmp , other);
+    return result > 0;
+}
+
+bool Mpz::operator>(const Mpz& other) const {
+    int result = mpz_cmp(this->gmp , other.gmp);
+    return result > 0;
+}
+
+bool Mpz::operator<(const unsigned long int& other) const {
+    int result = mpz_cmp_ui(this->gmp , other);
+    return result < 0;
+}
+
 bool Mpz::operator<(const Mpz& other) const {
     int result = mpz_cmp(this->gmp , other.gmp);
     return result < 0;
@@ -123,6 +138,27 @@ bool Mpz::operator<(const Mpz& other) const {
 bool Mpz::operator!=(const Mpz& other) const {
     int result = mpz_cmp(this->gmp , other.gmp);
     return result != 0;
+}
+
+bool Mpz::operator!=(const unsigned long int& other) const {
+    int result = mpz_cmp_ui(this->gmp, other);
+    return result != 0;
+}
+
+bool Mpz::operator==(const Mpz& other) const {
+    int result = mpz_cmp(this->gmp , other.gmp);
+    return result == 0;
+}
+
+bool Mpz::operator==(const unsigned long int& other) const {
+    int result = mpz_cmp_ui(this->gmp, other);
+    return result == 0;
+}
+
+Mpz Mpz::abs() const {
+    Mpz result;
+    mpz_abs(result.gmp, this->gmp);
+    return result;
 }
 
 Mpz Mpz::pow(const unsigned long int& power) const {
@@ -180,4 +216,12 @@ std::ostream& operator<<(std::ostream &os, const Mpz& value) {
     os << a;
 
     return os;
+}
+
+unsigned long int Mpz::to_uint() {
+    return mpz_get_ui(this->gmp);
+}
+
+signed long int Mpz::to_int() {
+    return mpz_get_si(this->gmp);
 }
