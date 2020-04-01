@@ -13,9 +13,13 @@ public:
 
     Matrix(const unsigned int rows, const unsigned int columns, int maxValue);
 
+    Matrix(const std::vector< std::vector<Mpz> >& matrix);
+
     ~Matrix();
 
     std::vector<Mpz> operator[](size_t row) const;
+
+    std::vector<Mpz>& operator[](size_t row);
 
     void printMatrix(int dataWidth);
 

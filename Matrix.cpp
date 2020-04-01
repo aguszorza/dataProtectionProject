@@ -16,11 +16,19 @@ Matrix::Matrix(const unsigned int rows, const unsigned int columns, int maxValue
     }
 }
 
+Matrix::Matrix(const std::vector< std::vector<Mpz> >& matrix) {
+    this->matrix = matrix;
+}
+
 Matrix::~Matrix() {}
 
 std::vector<Mpz> Matrix::operator[](size_t row) const {
     std::vector<Mpz> result = this->matrix[row];
     return result;
+}
+
+std::vector<Mpz>& Matrix::operator[](size_t row) {
+    return this->matrix[row];
 }
 
 void Matrix::printMatrix(int dataWidth) {
