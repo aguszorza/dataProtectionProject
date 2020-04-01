@@ -93,81 +93,54 @@ std::vector<Mpz> get_cdw(const Mpz& c1, const Mpz& c2, int d, int EP, int w, con
 void decode(const std::vector< std::vector<Mpz> >& matrix, const Paillier& paillier, const int& EP) {
     Generator generator_r2(KS);
     Mpz r2;
-    Mpz theta_er, theta_1, theta_2, theta_g;
-    std::vector<int> d_list;
-    std::vector< std::vector<Mpz> > encoded_matrix;
+    std::vector<Difference> d_list;
+    std::vector< std::vector<Mpz> > encoded_matrix, encoded_matrix2;
     std::vector< std::vector<Mpz> > cdw_matrix;
     Histogram histogram;
     DataHider dataHider(paillier.p, paillier.q);
-    for (int row = 0; row < 6; row++) {
-        encoded_matrix.push_back(matrix[row]);
-        r2 = generator_r2.generate_prime(10, 24);
-        theta_er = paillier.encode(0, r2).invert(paillier.N2);
-        encoded_matrix[row][2] = (encoded_matrix[row][2] * theta_er).mod(paillier.N2);
-        cdw_matrix.push_back(encoded_matrix[row]);
+    Mpz g = paillier.p * paillier.q + 1; // TODO: get it in another way
+    Mpz N2 = paillier.p * paillier.q *  paillier.p * paillier.q; // TODO: get it in another way
+    TattooAggregator tattooAggregator(g, N2, W); // TODO: w is not necessary
 
-        theta_1 = encoded_matrix[row][0].invert(paillier.N2);
-        theta_2 = encoded_matrix[row][2].invert(paillier.N2);
+    encoded_matrix = Utils::paillierRemoveVoidEncrypting(matrix, paillier, generator_r2, 0, 2);
+    encoded_matrix2 = encoded_matrix;
+    cdw_matrix = Utils::getEncryptedDifferences(encoded_matrix, dataHider, 0, 2);
+    d_list = Utils::getDifferences(cdw_matrix, dataHider, 0, 2);
 
-        // eq 34
-        cdw_matrix[row][0] = (encoded_matrix[row][0] * theta_2).mod(paillier.N2);
-        cdw_matrix[row][2] = (encoded_matrix[row][2] * theta_1).mod(paillier.N2);
 
-        // histogram
-        int d = dataHider.get_difference(cdw_matrix[row][0], cdw_matrix[row][2]).difference;
-
-        d_list.push_back(d);
-
-        histogram.add(d);
-        std::cout << "decoe r2(row = " << row << ") = " << r2 << std::endl;
-
-    }
-    theta_g = (paillier.N + 1).invert(paillier.N2);
-   // int EP = 4; //histogram.get_max_key(); TODO: FIX THIS PROBLEM
     std::cout << "max d = " << EP << std::endl;
     int cmp;
     // we get c1 and c2
+    encoded_matrix = Utils::removeTattoo(encoded_matrix, d_list, tattooAggregator, EP, 0, 2);
+
     for (int row = 0; row < 6; row++) {
-        cmp = dataHider.compare(cdw_matrix[row][0], cdw_matrix[row][2]);
-        if (cmp > 0) {
-            if (d_list[row] > EP) {
-                encoded_matrix[row][0] = (encoded_matrix[row][0] * theta_g).mod(paillier.N2);
-            }
-        } else {
-            if (d_list[row] > EP) {
-                encoded_matrix[row][2] = (encoded_matrix[row][2] * theta_g).mod(paillier.N2);
-            }
-        }
-    }
-    // we decode with pailler (we obtain P1w and P2w)
-    for (int row = 0; row < 6; row++) {
-        encoded_matrix[row][0] = paillier.decode(encoded_matrix[row][0]);
-        encoded_matrix[row][2] = paillier.decode(encoded_matrix[row][2]);
+        encoded_matrix2[row][0] = paillier.decode(encoded_matrix2[row][0]);
+        encoded_matrix2[row][2] = paillier.decode(encoded_matrix2[row][2]);
     }
 
     std::cout << "\nBefore substracting 1\n" << std::endl;
-    print_matrix(encoded_matrix, 6, 3);
+    print_matrix(encoded_matrix2, 6, 3);
 
     for (int row = 0; row < 6; row++) {
         cmp = dataHider.compare(cdw_matrix[row][0], cdw_matrix[row][2]);
         std::cout << "CMP row " << row << " = " << cmp << std::endl;
-        if (d_list[row] == EP){
+        if (d_list[row].difference == EP){
             std::cout << "w agregada = 0" << std::endl;
         }
-        if (d_list[row] == EP + 1){
+        if (d_list[row].difference == EP + 1){
             std::cout << "w agregada = 1" << std::endl;
         }
         if (cmp > 0) {
-            if (d_list[row] > EP) {
-                encoded_matrix[row][0] = encoded_matrix[row][0] - 1;
+            if (d_list[row].difference > EP) {
+                encoded_matrix2[row][0] = encoded_matrix2[row][0] - 1;
             }
         } else {
-            if (d_list[row] > EP) {
-                encoded_matrix[row][2] = encoded_matrix[row][2] - 1;
+            if (d_list[row].difference > EP) {
+                encoded_matrix2[row][2] = encoded_matrix2[row][2] - 1;
             }
         }
     }
-    print_matrix(encoded_matrix, 6, 3);
+    print_matrix(encoded_matrix2, 6, 3);
 }
 
 int main() {
@@ -185,7 +158,7 @@ int main() {
 
     Mpz g = p * q + 1;
 
-    TattooAggregator tattooAggregator(g, W);
+    TattooAggregator tattooAggregator(g, N2, W);
 
     Paillier paillier(p, q);
 

@@ -9,15 +9,18 @@
 class TattooAggregator {
 private:
     Mpz g;
+    Mpz N2;
     std::bitset<128> tattoo_data;
     unsigned int tattoo_position;
 
 public:
-    TattooAggregator(Mpz& g, std::string& tattoo);
+    TattooAggregator(Mpz& g, Mpz& N2, std::string& tattoo);
 
     ~TattooAggregator();
 
     std::list<Mpz> tattoo(const Mpz& c1, const Mpz& c2, const Difference& difference, const int& EP);
+
+    std::list<Mpz> removeTattoo(const Mpz& cw1, const Mpz& cw2, const Difference& difference, const int& EP);
 };
 
 

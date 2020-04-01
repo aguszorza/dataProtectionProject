@@ -68,3 +68,32 @@ std::vector< std::vector<Mpz> > Utils::addTattoo(const std::vector< std::vector<
     }
     return result;
 }
+
+
+std::vector< std::vector<Mpz> > Utils::paillierRemoveVoidEncrypting(const std::vector< std::vector<Mpz> >& matrix,
+        const Paillier& paillier, Generator& generator_r2, const int& column_1, const int& column_2) {
+    std::vector< std::vector<Mpz> > result;
+    Mpz r2, theta_er;
+    for (unsigned int row = 0; row < matrix.size(); row++) {
+        result.push_back(matrix[row]);
+        r2 = generator_r2.generate_prime(10, 24);
+        theta_er = paillier.encode(0, r2).invert(paillier.N2);
+
+        result[row][column_2] = (result[row][column_2] * theta_er).mod(paillier.N2);
+    }
+    return result;
+}
+
+std::vector< std::vector<Mpz> > Utils::removeTattoo(const std::vector< std::vector<Mpz> >& matrix,
+        const std::vector<Difference>& differences, TattooAggregator& tattooAggregator, const int& EP,
+        const int& column_1, const int& column_2) {
+    std::vector< std::vector<Mpz> > result;
+    std::list<Mpz> list;
+    for (unsigned int row = 0; row < matrix.size(); row++) {
+        result.push_back(matrix[row]);
+        list = tattooAggregator.removeTattoo(result[row][column_1], result[row][column_2], differences[row], EP);
+        result[row][column_1] = list.front();
+        result[row][column_2] = list.back();
+    }
+    return result;
+}

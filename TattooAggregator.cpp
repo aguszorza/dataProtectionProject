@@ -1,8 +1,9 @@
 #include "TattooAggregator.h"
 
 
-TattooAggregator::TattooAggregator(Mpz& g, std::string& tattoo) {
+TattooAggregator::TattooAggregator(Mpz& g, Mpz& N2, std::string& tattoo) {
     this->g = g;
+    this->N2 = N2;
     this->tattoo_position = 0;
 
     std::string s2;
@@ -35,6 +36,28 @@ std::list<Mpz> TattooAggregator::tattoo(const Mpz& c1, const Mpz& c2, const Diff
     }
     result.push_back(cw1);
     result.push_back(cw2);
+
+    return result;
+}
+
+std::list<Mpz> TattooAggregator::removeTattoo(const Mpz& cw1, const Mpz& cw2, const Difference& difference,
+        const int& EP) {
+    std::list<Mpz> result;
+    Mpz c1 = cw1;
+    Mpz c2 = cw2;
+    Mpz theta_g = this->g.invert(this->N2);
+
+    if (difference.sign > 0) {
+        if (difference.difference > EP) {
+            c1 = (c1 * theta_g).mod(this->N2);
+        }
+    } else {
+        if (difference.difference > EP) {
+            c2 = (c2 * theta_g).mod(this->N2);
+        }
+    }
+    result.push_back(c1);
+    result.push_back(c2);
 
     return result;
 }
