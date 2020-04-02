@@ -12,7 +12,7 @@ Matrix::Matrix(const unsigned int rows, const unsigned int columns, int maxValue
     for (unsigned int i = 0; i < rows; i++) {
         std::vector<Mpz> row;
         for (unsigned int j = 0; j < columns; j++){
-            row.push_back(std::rand() % (maxValue));
+            row.push_back(std::rand() % (maxValue + 1));
         }
         this->matrix.push_back(row);
     }
@@ -23,7 +23,7 @@ Matrix::Matrix(const std::vector< std::vector<Mpz> >& matrix) {
 }
 
 
-Matrix::Matrix(const std::string& filename) {
+Matrix::Matrix(const std::string& filename, int maxValue, bool verify) {
     std::ifstream file(filename.c_str());
     std::string line;
 
@@ -33,6 +33,9 @@ Matrix::Matrix(const std::string& filename) {
         std::string element;
         while (std::getline(ss, element, ',')) {
             Mpz number(element);
+            if (number > maxValue and verify) {
+                throw std::runtime_error("Invalid Matrix: there are elements higher than the maximum value admitted");
+            }
             row.push_back(number);
         }
         this->matrix.push_back(row);

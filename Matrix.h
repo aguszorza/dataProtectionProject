@@ -20,7 +20,7 @@ public:
     Matrix(const std::vector< std::vector<Mpz> >& matrix);
 
     /* It generates a matrix from the content of a csv file */
-    Matrix(const std::string& filename);
+    Matrix(const std::string& filename, int maxValue, bool verify);
 
     ~Matrix();
 

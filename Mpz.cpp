@@ -13,7 +13,9 @@ Mpz::Mpz(const Mpz &other) {
 
 Mpz::Mpz(std::string value) {
     mpz_init(this->gmp);
-    mpz_set_str(this->gmp, value.c_str(), 10);
+    if (mpz_set_str(this->gmp, value.c_str(), 10) == -1) {
+        throw std::runtime_error("Invalid number: it is not possible to create the number from this string");
+    }
 }
 
 Mpz::~Mpz() {

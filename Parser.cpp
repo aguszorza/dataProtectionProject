@@ -11,6 +11,10 @@ Parser::Parser(int argc, char *argv[]) {
     this->tattoo = "invalid";
     this->KS = 0; // We suppose that 0 is an invalid key
     this->file = "";
+    this->process = "";
+    this->EP = -1;
+    this->p = 0;
+    this->q = 0;
 
     for (int i = 1; i < argc; i += 2) {
         argument = std::string(argv[i]);
@@ -34,9 +38,20 @@ Parser::Parser(int argc, char *argv[]) {
         } else if (argument == "-file") {
             this->file = argv[i + 1];
             this->validateFile();
+        } else if (argument == "-process") {
+            this->process = argv[i + 1];
+            this->validateProcess();
+        } else if (argument == "-EP") {
+            std::istringstream(argv[i + 1]) >> this->EP;
+            this->validateEP();
+        } else if (argument == "-p") {
+            this->p = Mpz(argv[i + 1]);
+        } else if (argument == "-q") {
+            this->q = Mpz(argv[i + 1]);
         }
     }
     this->validateColumnDifference();
+    this->validatePQ();
 }
 
 Parser::~Parser() {}
@@ -90,6 +105,33 @@ void Parser::validateFile() {
     matrixFile.close();
 }
 
+void Parser::validateProcess() {
+    if (this->process != "e" and this->process != "ed" and this->process != "d") {
+        return;
+    }
+    if (this->file.empty() and this->process == "d") {
+        throw std::runtime_error("Invalid process: decoding requires encoded matrix file");
+    }
+}
+
+void Parser::validateEP() {
+    if (this->process != "e" and this->process != "ed" and this->process != "d") {
+        return;
+    }
+    if (this->EP == -1 and this->process == "d") {
+        throw std::runtime_error("Invalid EP: decoding requires a positive EP");
+    }
+}
+
+void Parser::validatePQ() {
+    if (this->process != "e" and this->process != "ed" and this->process != "d") {
+        return;
+    }
+    if (this->process == "d" and (this->p == 0 or this->q == 0)) {
+        throw std::runtime_error("Invalid q or p: decoding requires a positive p and q");
+    }
+}
+
 int Parser::getColumns(int defaultValue) {
     if (this->columns < 2) {
         return defaultValue;
@@ -137,4 +179,36 @@ std::string Parser::getFilename(std::string defaultValue) {
         return defaultValue;
     }
     return this->file;
+}
+
+bool Parser::getDoEncodeProcess(bool defaultValue) {
+    if (this->process != "e" and this->process != "ed" and this->process != "d") {
+        return defaultValue;
+    }
+    return this->process == "e" or this->process == "ed";
+}
+
+bool Parser::getDoDecodeProcess(bool defaultValue) {
+    if (this->process != "e" and this->process != "ed" and this->process != "d") {
+        return defaultValue;
+    }
+    return this->process == "d" or this->process == "ed";
+}
+
+int Parser::getEP() {
+    return this->EP;
+}
+
+Mpz Parser::getP(Mpz& defaultValue) {
+    if (this->p < 1) {
+        return defaultValue;
+    }
+    return this->p;
+}
+
+Mpz Parser::getQ(Mpz& defaultValue) {
+    if (this->q < 1) {
+        return defaultValue;
+    }
+    return this->q;
 }

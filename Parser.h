@@ -2,6 +2,7 @@
 #define PAILLER_PARSER_H
 
 #include <string>
+#include "Mpz.h"
 
 class Parser {
 private:
@@ -9,9 +10,13 @@ private:
     int rows;
     int column_1;
     int column_2;
+    int EP;
     std::string file;
     std::string tattoo;
+    std::string process;
     unsigned long int KS;
+    Mpz p;
+    Mpz q;
 
     /* Validations */
     void validateTattoo();
@@ -27,6 +32,12 @@ private:
     void validateColumnDifference();
 
     void validateFile();
+
+    void validateProcess();
+
+    void validateEP();
+
+    void validatePQ();
 
 public:
     Parser(int argc, char *argv[]);
@@ -47,6 +58,16 @@ public:
     unsigned long int getKs(unsigned long int defaultValue);
 
     std::string getFilename(std::string defaultValue);
+
+    bool getDoEncodeProcess(bool defaultValue);
+
+    bool getDoDecodeProcess(bool defaultValue);
+
+    int getEP();
+
+    Mpz getP(Mpz& defaultValue);
+
+    Mpz getQ(Mpz& defaultValue);
 };
 
 

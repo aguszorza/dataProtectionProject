@@ -26,7 +26,22 @@ size of 128 bits
 
 * **-ks**: It allows you to set the key that will be used to generate r2. It must be a positive number
 
-* **-file**: It allows you to use a matrix that is saved in a csv file. The file must be separated by ","
+* **-process**: It allows you to specify the type of process you want to execute (encoding, decoding or both). 
+The value should be "e", "d" or "ed".
+
+* **-file**: It allows you to use a matrix that is saved in a csv file. The file must be separated by ",". If you are 
+executing a decoding process, this parameter is mandatory. If you are decoding and you are using the file generated
+with the encoding process, then you have to use "encoded_with_tattoo.csv".
+
+* **-EP**: It allows you to indicate the EP value. It will be used only if it is a decoding process. It is mandatory if
+you are decoding.
+
+* **-p**: It allows you to indicate the p value. If you are decoding it is mandatory.
+
+* **-q**: It allows you to indicate the q value. If you are decoding it is mandatory.
+
+
+
 
 ## Example
 
@@ -37,6 +52,8 @@ size of 128 bits
 The program will generate output by the terminal (standard output) and also in files. The terminal will show:
  
 * The original matrix to be encoded
+
+* The values of p, q and the encoding columns used
 
 * The EP obtained and the portion of the tattoo used during encoding
  
@@ -50,4 +67,9 @@ Several files will be created in which it can be viewed. Some will be in csv for
 * The matrices decoded by both methods (csv and txt)
 
 * Some intermediate matrices (csv)
+
+## Clarifications
+
+* For the decoding, it would be better 
+
 
