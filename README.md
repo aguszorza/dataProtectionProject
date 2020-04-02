@@ -3,7 +3,7 @@
 ## Setup
 
 1. Run: `make`
-2. Run `./Programme`
+2. Run: `./Programme`
 
 It is necessary to have GMP installed with support for c and c ++.
 
