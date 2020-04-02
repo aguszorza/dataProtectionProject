@@ -70,6 +70,9 @@ Several files will be created in which it can be viewed. Some will be in csv for
 
 ## Clarifications
 
-* For the decoding, it would be better 
+* You can run  `sh compare.sh` to check if the decoded matrices are the same as the original. The file is a bash 
+script that runs two diff commands comparing the file "original.csv" with the files "decoded_3_3_1.csv" and "decoded_3_3_2.csv"
 
-
+* We could not perform all the tests so there could be certain bugs / errors for certain cases (for example with the
+data passed as parameters when executing the program). However, we believe that there should be no problem using
+the defaults values (`./Programme`)
