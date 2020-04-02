@@ -40,10 +40,9 @@ Parser::Parser(int argc, char *argv[]) {
             this->validateFile();
         } else if (argument == "-process") {
             this->process = argv[i + 1];
-            this->validateProcess();
+
         } else if (argument == "-EP") {
             std::istringstream(argv[i + 1]) >> this->EP;
-            this->validateEP();
         } else if (argument == "-p") {
             this->p = Mpz(argv[i + 1]);
         } else if (argument == "-q") {
@@ -51,7 +50,7 @@ Parser::Parser(int argc, char *argv[]) {
         }
     }
     this->validateColumnDifference();
-    this->validatePQ();
+    this->validateProcess();
 }
 
 Parser::~Parser() {}
@@ -112,25 +111,14 @@ void Parser::validateProcess() {
     if (this->file.empty() and this->process == "d") {
         throw std::runtime_error("Invalid process: decoding requires encoded matrix file");
     }
-}
-
-void Parser::validateEP() {
-    if (this->process != "e" and this->process != "ed" and this->process != "d") {
-        return;
-    }
     if (this->EP == -1 and this->process == "d") {
         throw std::runtime_error("Invalid EP: decoding requires a positive EP");
-    }
-}
-
-void Parser::validatePQ() {
-    if (this->process != "e" and this->process != "ed" and this->process != "d") {
-        return;
     }
     if (this->process == "d" and (this->p == 0 or this->q == 0)) {
         throw std::runtime_error("Invalid q or p: decoding requires a positive p and q");
     }
 }
+
 
 int Parser::getColumns(int defaultValue) {
     if (this->columns < 2) {

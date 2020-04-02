@@ -35,10 +35,6 @@ private:
 
     void validateProcess();
 
-    void validateEP();
-
-    void validatePQ();
-
 public:
     Parser(int argc, char *argv[]);
 
