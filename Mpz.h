@@ -1,5 +1,6 @@
 #ifndef PAILLER_MPZ_H
 #define PAILLER_MPZ_H
+
 #include <gmp.h>
 #include <iostream>
 
@@ -76,9 +77,10 @@ public:
 
     bool operator==(const unsigned long int& other) const;
 
-    /* power */
+    /* It returns the absolute value */
     Mpz abs() const;
 
+    /* power */
     Mpz pow(const unsigned long int& power) const;
 
     Mpz powm(const Mpz& exp, const Mpz& mod) const;
@@ -92,21 +94,24 @@ public:
     /* Return the size of op measured in number of digits in the given base */
     size_t sizeinbase(int base);
 
-    /* Calculates the mod */
+    /* It calculates the module */
     Mpz mod(const Mpz& d) const;
 
     Mpz mod(const unsigned long int& d) const;
 
-    /* Calculate the inverse of the mod */
+    /* It calculates the modular multiplicative inverse */
     Mpz invert(const Mpz& other) const;
 
     /* Calculate the least common multiple */
     Mpz lcm(const Mpz& other) const;
 
+    /* It returns the number in unsigned long int */
     unsigned long int to_uint();
 
+    /* It returns the number in long int */
     signed long int to_int();
 
+    /* It defines how to print the class */
     friend std::ostream& operator<<(std::ostream &os, const Mpz& value);
 };
 

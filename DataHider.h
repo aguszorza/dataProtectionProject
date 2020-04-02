@@ -18,11 +18,11 @@ public:
 
     ~DataHider();
 
+    /* It calculates the difference between the two encrypted values */
     std::list<Mpz> get_encrypted_differences(const Mpz& c1, const Mpz& c2) const;
 
+    /* It calculates the difference between the two real values using the encrypted values */
     Difference get_difference(const Mpz& cd1, const Mpz& cd2) const;
-
-    int compare(const Mpz& cd1, const Mpz& cd2) const;
 };
 
 

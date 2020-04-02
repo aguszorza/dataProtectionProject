@@ -13,6 +13,7 @@ private:
     std::string tattoo;
     unsigned long int KS;
 
+    /* Validations */
     void validateTattoo();
 
     void validateColumns();
@@ -32,6 +33,7 @@ public:
 
     ~Parser();
 
+    /* Getters of the attributes. If they are in an invalid value, it returns the default value */
     int getColumns(int defaultValue);
 
     int getRows(int defaultValue);

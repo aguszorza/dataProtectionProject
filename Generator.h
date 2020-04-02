@@ -1,7 +1,6 @@
 #ifndef PAILLER_GENERATOR_H
 #define PAILLER_GENERATOR_H
 
-#include <gmp.h>
 #include "Mpz.h"
 #include <time.h>
 

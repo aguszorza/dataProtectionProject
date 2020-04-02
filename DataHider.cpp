@@ -46,13 +46,3 @@ Difference DataHider::get_difference(const Mpz& cd1, const Mpz& cd2) const {
     }
     return Difference(d2, -1);
 }
-
-int DataHider::compare(const Mpz& cd1, const Mpz& cd2) const {
-    int d1 = this->find_d(cd1);
-    if (d1 < this->MAX_VALUE) {
-        // P1 >= P2
-        return 1;
-    }
-    // P2 > P1
-    return -1;
-}

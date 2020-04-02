@@ -83,10 +83,11 @@ void Parser::validateColumnDifference() {
 }
 
 void Parser::validateFile() {
-    std::ifstream file(this->file.c_str());
-    if (!file.good()) {
+    std::ifstream matrixFile(this->file.c_str());
+    if (!matrixFile.good()) {
         throw std::runtime_error("Invalid file: the file does not exist");
     }
+    matrixFile.close();
 }
 
 int Parser::getColumns(int defaultValue) {

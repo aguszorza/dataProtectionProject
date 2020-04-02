@@ -5,6 +5,8 @@
 1. Run: `make`
 2. Run `./Programme`
 
+It is necessary to have GMP installed with support for c and c ++.
+
 ## Parameters
 
 The program allows a series of parameters. The flags to be used are listed below.

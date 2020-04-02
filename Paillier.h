@@ -1,7 +1,3 @@
-//
-// Created by agustin on 15/3/20.
-//
-
 #ifndef PAILLER_PAILLIER_H
 #define PAILLER_PAILLIER_H
 
@@ -20,10 +16,13 @@ public:
 
     ~Paillier();
 
+    /* It encodes the message using Paillier */
     Mpz encode(const Mpz& message, const Mpz& r) const;
 
+    /* It encodes the message using Paillier */
     Mpz encode(const int message, const Mpz& r) const;
 
+    /* It decodes the message using Paillier */
     Mpz decode(const Mpz& encoded) const;
 };
 
