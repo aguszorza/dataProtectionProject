@@ -25,6 +25,8 @@ private:
 
     void validateColumnDifference();
 
+    void validateFile();
+
 public:
     Parser(int argc, char *argv[]);
 

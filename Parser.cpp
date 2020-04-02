@@ -1,5 +1,6 @@
 #include "Parser.h"
 #include <sstream>
+#include <fstream>
 
 Parser::Parser(int argc, char *argv[]) {
     std::string argument;
@@ -32,6 +33,7 @@ Parser::Parser(int argc, char *argv[]) {
             std::istringstream(argv[i + 1]) >> this->KS;
         } else if (argument == "-file") {
             this->file = argv[i + 1];
+            this->validateFile();
         }
     }
     this->validateColumnDifference();
@@ -51,13 +53,13 @@ void Parser::validateTattoo() {
 }
 
 void Parser::validateColumns() {
-    if (this->columns < 1) {
+    if (this->columns < 2) {
         throw std::runtime_error("Invalid value Columns: it should have a positive value");
     }
 }
 
 void Parser::validateRows() {
-    if (this->rows < 1) {
+    if (this->rows < 2) {
         throw std::runtime_error("Invalid value Rows: it should have a positive value");
     }
 }
@@ -80,15 +82,22 @@ void Parser::validateColumnDifference() {
     }
 }
 
+void Parser::validateFile() {
+    std::ifstream file(this->file.c_str());
+    if (!file.good()) {
+        throw std::runtime_error("Invalid file: the file does not exist");
+    }
+}
+
 int Parser::getColumns(int defaultValue) {
-    if (this->columns < 1) {
+    if (this->columns < 2) {
         return defaultValue;
     }
     return this->columns;
 }
 
 int Parser::getRows(int defaultValue) {
-    if (this->rows < 1) {
+    if (this->rows < 2) {
         return defaultValue;
     }
     return this->rows;
